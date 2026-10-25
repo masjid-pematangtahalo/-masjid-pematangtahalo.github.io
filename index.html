@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masjid Jami' DARUSSALAM Pematang Tahalo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet Peta OpenStreetMap -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- PapaParse untuk Baca Google Sheet CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- ================= HEADER RESMI MASJID ================= -->
+    <header class="bg-emerald-800 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-emerald-700 border border-amber-300 flex items-center justify-center text-amber-300 font-bold text-xl shadow">
+                    <i class="fa-solid fa-mosque"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="bg-amber-400 text-slate-900 text-[10px] uppercase font-black px-1.5 py-0.5 rounded shadow-sm">TERDAFTAR RESMI</span>
+                        <h1 class="font-extrabold text-sm sm:text-base tracking-wide leading-tight">DARUSSALAM</h1>
+                    </div>
+                    <p class="text-[11px] text-emerald-200">ID SIMAS: 01.4.08.07.03.000020 • Pematang Tahalo</p>
+                </div>
+            </div>
+
+            <!-- Navigasi Menu Tab -->
+            <div class="flex items-center bg-emerald-900/70 p-1 rounded-xl border border-emerald-700/60">
+                <button onclick="switchTab('profil')" id="tab-btn-profil" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow">
+                    <i class="fa-solid fa-circle-info mr-1"></i> Profil
+                </button>
+                <button onclick="switchTab('keuangan')" id="tab-btn-keuangan" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white">
+                    <i class="fa-solid fa-wallet mr-1"></i> Kas Masjid (LIVE)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= KONTEN UTAMA ================= -->
+    <main class="max-w-6xl w-full mx-auto px-4 py-6 flex-1 space-y-6">
+
+        <!-- ========================================================================= -->
+        <!-- TAB 1: PROFIL MASJID (DATA RESMI SIMAS KEMENAG RI)                        -->
+        <!-- ========================================================================= -->
+        <section id="tab-profil" class="space-y-6">
+            
+            <!-- Breadcrumb Navigation -->
+            <div class="text-xs text-slate-400 flex items-center gap-1.5 overflow-x-auto pb-1">
+                <span>Beranda</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                <span>Profil Masjid</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                <span class="text-slate-600 font-medium">Detail</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                <span class="text-emerald-700 font-bold">DARUSSALAM</span>
+            </div>
+
+            <!-- HERO CARD PROFIL -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-5 text-slate-900 pointer-events-none">
+                    <i class="fa-solid fa-mosque text-9xl"></i>
+                </div>
+
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full">Masjid Jami</span>
+                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full">Berdiri 1979</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded-full">Status: Wakaf</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">MASJID JAMI' DARUSSALAM</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-location-dot text-emerald-600"></i> JL DALOM BANDAR PEMATANG TAHALO
+                        </p>
+                        <p class="text-xs text-slate-400 mt-0.5">Kecamatan Jabung, Kabupaten Lampung Timur, Provinsi Lampung</p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                        <button onclick="switchTab('keuangan')" class="w-full sm:w-auto px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow">
+                            <i class="fa-solid fa-vault"></i> Cek Kas Masjid
+                        </button>
+                        <button onclick="shareApp()" class="w-full sm:w-auto px-4 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-share-nodes"></i> Bagikan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SIMAS Identitas Card & Kontak Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-slate-100">
+                    <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">ID Registrasi SIMAS</span>
+                        <p class="text-xs sm:text-sm font-mono font-bold text-emerald-800 mt-0.5">01.4.08.07.03.000020</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">Telepon Sekretariat</span>
+                        <p class="text-xs sm:text-sm font-bold text-slate-700 mt-0.5">-</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">Email</span>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-0.5 italic">Belum ada</p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">Kementerian Terkait</span>
+                        <p class="text-xs sm:text-sm font-bold text-slate-700 mt-0.5">Kemenag RI</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUSUNAN PENGURUS & SDM -->
+            <div>
+                <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">SDM & Kepengurusan Masjid</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-2xl font-black text-emerald-700">9</span>
+                        <span class="text-[11px] text-slate-400 block font-medium">orang</span>
+                        <p class="text-xs font-bold text-slate-800 mt-1">Pengurus</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-2xl font-black text-emerald-700">5</span>
+                        <span class="text-[11px] text-slate-400 block font-medium">orang</span>
+                        <p class="text-xs font-bold text-slate-800 mt-1">Imam</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-2xl font-black text-emerald-700">5</span>
+                        <span class="text-[11px] text-slate-400 block font-medium">orang</span>
+                        <p class="text-xs font-bold text-slate-800 mt-1">Khatib</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-2xl font-black text-emerald-700">5</span>
+                        <span class="text-[11px] text-slate-400 block font-medium">orang</span>
+                        <p class="text-xs font-bold text-slate-800 mt-1">Muazin</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm col-span-2 sm:col-span-1">
+                        <span class="text-2xl font-black text-amber-600">15</span>
+                        <span class="text-[11px] text-slate-400 block font-medium">orang</span>
+                        <p class="text-xs font-bold text-slate-800 mt-1">Remaja Masjid</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JADWAL SHOLAT HARI INI -->
+            <div class="bg-emerald-900 text-white rounded-3xl p-6 shadow-md">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 border-b border-emerald-800 pb-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">JADWAL SHOLAT HARI INI</span>
+                        <h4 class="text-base font-bold text-white uppercase" id="current-date-text">KAB. LAMPUNG TIMUR</h4>
+                    </div>
+                    <span class="text-[11px] text-emerald-300 bg-emerald-800/80 px-2.5 py-1 rounded-full">Zona Waktu: WIB (Kemenag RI)</span>
+                </div>
+
+                <div class="grid grid-cols-3 sm:grid-cols-7 gap-2 text-center text-xs">
+                    <div class="bg-emerald-800/60 p-2.5 rounded-xl border border-emerald-700">
+                        <span class="text-emerald-300 text-[10px] font-semibold">Imsak</span>
+                        <p class="text-sm sm:text-base font-black mt-1">04:07</p>
+                    </div>
+                    <div class="bg-amber-400 text-slate-950 p-2.5 rounded-xl font-bold shadow">
+                        <span class="text-slate-800 text-[10px] uppercase">Subuh</span>
+                        <p class="text-sm sm:text-base font-black mt-1">04:17</p>
+                    </div>
+                    <div class="bg-emerald-800/60 p-2.5 rounded-xl border border-emerald-700">
+                        <span class="text-emerald-300 text-[10px] font-semibold">Terbit</span>
+                        <p class="text-sm sm:text-base font-black mt-1">05:31</p>
+                    </div>
+                    <div class="bg-emerald-800/60 p-2.5 rounded-xl border border-emerald-700">
+                        <span class="text-emerald-300 text-[10px] font-semibold">Dzuhur</span>
+                        <p class="text-sm sm:text-base font-black mt-1">11:45</p>
+                    </div>
+                    <div class="bg-emerald-800/60 p-2.5 rounded-xl border border-emerald-700">
+                        <span class="text-emerald-300 text-[10px] font-semibold">Ashar</span>
+                        <p class="text-sm sm:text-base font-black mt-1">14:58</p>
+                    </div>
+                    <div class="bg-emerald-800/60 p-2.5 rounded-xl border border-emerald-700">
+                        <span class="text-emerald-300 text-[10px] font-semibold">Maghrib</span>
+                        <p class="text-sm sm:text-base font-black mt-1">17:53</p>
+                    </div>
+                    <div class="bg-emerald-800/60 p-2.5 rounded-xl border border-emerald-700 col-span-3 sm:col-span-1">
+                        <span class="text-emerald-300 text-[10px] font-semibold">Isya</span>
+                        <p class="text-sm sm:text-base font-black mt-1">19:03</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PETA LOKASI INTERAKTIF (LEAFLET OSM) -->
+            <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-3">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Lokasi Masjid di OpenStreetMap</h4>
+                        <p class="text-xs text-slate-500 font-mono mt-0.5">📍 -5.433582, 105.724754</p>
+                    </div>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=-5.433582,105.724754" target="_blank" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-diamond-turn-right text-emerald-700"></i> Petunjuk Arah
+                    </a>
+                </div>
+                <div id="map" class="h-64 w-full rounded-2xl border border-slate-200"></div>
+            </div>
+
+            <!-- FASILITAS & KEGIATAN RUTIN -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Fasilitas (11 Sarana Ibadah) -->
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">Fasilitas Sarana & Prasarana</h4>
+                            <p class="text-xs text-slate-400">11 sarana ibadah tersedia</p>
+                        </div>
+                        <span class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 font-bold flex items-center justify-center text-xs">11</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs text-slate-700 font-medium">
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Tempat Wudhu</div>
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Kamar Mandi/WC</div>
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Genset Listrik</div>
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Sound & Multimedia</div>
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Penyejuk Udara/AC</div>
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Kantor Sekretariat</div>
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Perpustakaan</div>
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Gudang</div>
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Taman</div>
+                        <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50"><i class="fa-solid fa-check text-emerald-600"></i> Area Parkir</div>
+                    </div>
+                </div>
+
+                <!-- Kegiatan Rutin (7 Aktivitas) -->
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">Kegiatan Rutin Masjid</h4>
+                            <p class="text-xs text-slate-400">7 aktivitas keagamaan & sosial</p>
+                        </div>
+                        <span class="w-8 h-8 rounded-full bg-amber-50 text-amber-700 font-bold flex items-center justify-center text-xs">7</span>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-700">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> Menyelenggarakan Ibadah Sholat Fardhu</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> Menyelenggarakan Sholat Jumat</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> Kegiatan Hari Besar Islam (PHBI)</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> Dakwah Islam / Tabligh Akbar</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> Pengajian Rutin Jamaah</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> Pendidikan Al-Qur'an (TPA / Madrasah)</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> Pengelolaan Zakat, Infaq, Shodaqoh & Wakaf</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================================================= -->
+        <!-- TAB 2: MENU KEUANGAN KAS MASJID (LIVE GOOGLE SHEETS)                      -->
+        <!-- ========================================================================= -->
+        <section id="tab-keuangan" class="hidden space-y-6">
+
+            <!-- Banner Sinkronisasi -->
+            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-sheet-plastic"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-emerald-950">Laporan Kas Online & Transparan</h4>
+                        <p class="text-[11px] text-emerald-700">Data bersumber dari pembukuan Google Sheets & inputan pesan WhatsApp Bendahara</p>
+                    </div>
+                </div>
+                <button onclick="loadDataFromGoogleSheets()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+                    <i class="fa-solid fa-rotate" id="refresh-icon"></i> Perbarui Sekarang
+                </button>
+            </div>
+
+            <!-- 4 KARTU SALDO BAGIAN ATAS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <!-- 1. KAS AWAL -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-emerald-300 flex flex-col justify-between">
+                    <span class="text-xs font-black text-emerald-800 uppercase tracking-wide">1. KAS AWAL</span>
+                    <h3 id="card-kas-awal" class="text-xl font-black text-slate-800 mt-2">Memuat...</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">Saldo pembukuan awal</p>
+                </div>
+
+                <!-- 2. PENDAPATAN UANG JAMAAH JUMAT -->
+                <div class="bg-amber-50 p-4 rounded-2xl shadow-sm border border-amber-200 flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-amber-900 uppercase tracking-wide">2. KOTAK JAMAAH JUMAT</span>
+                        <i class="fa-solid fa-box-archive text-amber-600 text-sm"></i>
+                    </div>
+                    <h3 id="card-jumat" class="text-xl font-black text-amber-700 mt-2">Memuat...</h3>
+                    <p class="text-[11px] text-amber-800 mt-1">Total infaq Sholat Jumat</p>
+                </div>
+
+                <!-- 3. TOTAL SEMUA PEMASUKAN -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-blue-100 flex flex-col justify-between">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">3. TOTAL PEMASUKAN</span>
+                    <h3 id="card-pemasukan" class="text-xl font-bold text-blue-600 mt-2">Memuat...</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">Jumat + donasi/transfer lain</p>
+                </div>
+
+                <!-- 4. TOTAL PENGELUARAN -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-rose-100 flex flex-col justify-between">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">4. TOTAL PENGELUARAN</span>
+                    <h3 id="card-pengeluaran" class="text-xl font-bold text-rose-600 mt-2">Memuat...</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">Listrik, perawatan, operasional</p>
+                </div>
+            </div>
+
+            <!-- TABEL MUTASI KAS MASJID -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-4 border-b border-slate-100 flex flex-wrap gap-2 items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">Riwayat Transaksi Kas</h3>
+                        <p class="text-xs text-slate-400">Pencatatan kas masuk dan kas keluar</p>
+                    </div>
+                    <span id="sync-status" class="text-[11px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full">
+                        <i class="fa-solid fa-circle-check"></i> Terhubung Google Sheets
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b">
+                            <tr>
+                                <th class="p-3">Tanggal</th>
+                                <th class="p-3">Kategori</th>
+                                <th class="p-3">Keterangan / Uraian</th>
+                                <th class="p-3 text-right">Nominal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="divide-y divide-slate-100 text-slate-700">
+                            <tr><td colspan="4" class="p-6 text-center text-slate-400 text-xs">Sedang mengambil data terbaru...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- KAS AKHIR / KAS HARI INI DI BAGIAN BAWAH -->
+            <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 rounded-3xl p-6 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 border-2 border-emerald-600">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-amber-400 text-slate-950 text-[10px] font-black uppercase px-2 py-0.5 rounded">STATUS TERKINI</span>
+                        <p class="text-xs text-emerald-200" id="label-hari-ini">Per Hari Ini</p>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-black mt-1 tracking-wide">KAS AKHIR / KAS HARI INI</h2>
+                    <p class="text-xs text-emerald-200 mt-0.5">Rumus: (Kas Awal + Semua Pemasukan) - Total Pengeluaran</p>
+                </div>
+                <div class="text-center sm:text-right">
+                    <h1 id="card-saldo-total" class="text-3xl sm:text-4xl font-black text-amber-300">Rp 0</h1>
+                    <p class="text-xs text-emerald-100 font-medium mt-1">Uang riil kas masjid siap pakai saat ini</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER RESMI & AMAN ================= -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center space-y-2">
+            <p class="font-bold text-slate-200 text-sm tracking-wide">MASJID JAMI' DARUSSALAM PEMATANG TAHALO</p>
+            <p class="text-slate-400 max-w-xl mx-auto leading-relaxed text-[11px]">
+                Website profil informasi & transparansi keuangan kas masjid. Data profil diselaraskan dengan database Sistem Informasi Masjid (SIMAS) Kementerian Agama Republik Indonesia.
+            </p>
+            <div class="pt-4 text-[11px] text-slate-500 border-t border-slate-800">
+                No. Registrasi SIMAS: 01.4.08.07.03.000020 • JL DALOM BANDAR PEMATANG TAHALO, Jabung, Lampung Timur
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Link CSV Google Sheet resmi milik Anda
+        const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRduE4d1J1KoMLXngqBhTHbNzxGOpqOZ7pCphMWkc9IcHatETrnoClckKTFIUVsZamLYeS4iuwJ7u8/pub?output=csv";
+
+        // Tab Navigation
+        function switchTab(tab) {
+            const tabProfil = document.getElementById('tab-profil');
+            const tabKeuangan = document.getElementById('tab-keuangan');
+            const btnProfil = document.getElementById('tab-btn-profil');
+            const btnKeuangan = document.getElementById('tab-btn-keuangan');
+
+            if (tab === 'profil') {
+                tabProfil.classList.remove('hidden');
+                tabKeuangan.classList.add('hidden');
+                btnProfil.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow";
+                btnKeuangan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white";
+                setTimeout(() => { if (window.map) window.map.invalidateSize(); }, 200);
+            } else {
+                tabProfil.classList.add('hidden');
+                tabKeuangan.classList.remove('hidden');
+                btnKeuangan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow";
+                btnProfil.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white";
+                loadDataFromGoogleSheets();
+            }
+        }
+
+        // Format Rupiah
+        const toRupiah = (val) => 'Rp ' + Number(val || 0).toLocaleString('id-ID');
+
+        // Membaca Data dari Google Sheets
+        function loadDataFromGoogleSheets() {
+            const refreshIcon = document.getElementById('refresh-icon');
+            if (refreshIcon) refreshIcon.classList.add('fa-spin');
+
+            Papa.parse(GOOGLE_SHEET_CSV_URL, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    processRows(results.data);
+                    if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+                },
+                error: function(err) {
+                    document.getElementById('sync-status').innerHTML = '<span class="text-rose-700 bg-rose-100 px-2 py-0.5 rounded font-bold">Gagal Mengambil Data</span>';
+                    if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+                }
+            });
+        }
+
+        function processRows(rows) {
+            let kasAwal = 0;
+            let totalJumat = 0;
+            let totalMasukLain = 0;
+            let totalKeluar = 0;
+            let transactionRows = [];
+
+            rows.forEach(row => {
+                const kategori = (row.Kategori || '').trim().toUpperCase();
+                const nominal = parseFloat(String(row.Nominal || '0').replace(/[^0-9.-]/g, '')) || 0;
+                const tanggal = row.Tanggal || '';
+                const keterangan = row.Keterangan || '';
+
+                if (kategori === 'KAS_AWAL') {
+                    kasAwal += nominal;
+                } else if (kategori === 'JUMAT') {
+                    totalJumat += nominal;
+                    transactionRows.push({ tanggal, kategori, keterangan, nominal, type: 'MASUK' });
+                } else if (kategori === 'MASUK') {
+                    totalMasukLain += nominal;
+                    transactionRows.push({ tanggal, kategori, keterangan, nominal, type: 'MASUK' });
+                } else if (kategori === 'KELUAR') {
+                    totalKeluar += nominal;
+                    transactionRows.push({ tanggal, kategori, keterangan, nominal, type: 'KELUAR' });
+                }
+            });
+
+            const totalSemuaPemasukan = totalJumat + totalMasukLain;
+            const kasAkhir = kasAwal + totalSemuaPemasukan - totalKeluar;
+
+            // Update Kartu Atas
+            document.getElementById('card-kas-awal').textContent = toRupiah(kasAwal);
+            document.getElementById('card-jumat').textContent = toRupiah(totalJumat);
+            document.getElementById('card-pemasukan').textContent = toRupiah(totalSemuaPemasukan);
+            document.getElementById('card-pengeluaran').textContent = toRupiah(totalKeluar);
+
+            // Update Kartu Kas Akhir Bawah
+            document.getElementById('card-saldo-total').textContent = toRupiah(kasAkhir);
+            document.getElementById('label-hari-ini').textContent = 'Per ' + new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+            // Update Isi Tabel
+            const tbody = document.getElementById('table-body');
+            transactionRows.reverse();
+
+            if (transactionRows.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 text-xs">Belum ada catatan mutasi kas.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = transactionRows.map(item => `
+                <tr class="hover:bg-slate-50 transition border-b">
+                    <td class="p-3 text-xs whitespace-nowrap text-slate-500">${item.tanggal}</td>
+                    <td class="p-3">
+                        ${item.kategori === 'JUMAT' 
+                            ? `<span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-mosque text-[10px]"></i> Jamaah Jumat</span>`
+                            : item.type === 'MASUK'
+                            ? `<span class="bg-blue-100 text-blue-700 text-[11px] font-semibold px-2 py-0.5 rounded-full">Pemasukan Lain</span>`
+                            : `<span class="bg-rose-100 text-rose-700 text-[11px] font-semibold px-2 py-0.5 rounded-full">Pengeluaran</span>`
+                        }
+                    </td>
+                    <td class="p-3 text-xs font-semibold text-slate-800">${item.keterangan}</td>
+                    <td class="p-3 text-xs font-bold text-right ${item.type === 'MASUK' ? 'text-emerald-600' : 'text-rose-600'}">
+                        ${item.type === 'MASUK' ? '+' : '-'} ${toRupiah(item.nominal)}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Inisialisasi Peta Leaflet (Koordinat: -5.433582, 105.724754)
+        function initMap() {
+            const lat = -5.433582;
+            const lng = 105.724754;
+            window.map = L.map('map').setView([lat, lng], 16);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(window.map);
+
+            const marker = L.marker([lat, lng]).addTo(window.map);
+            marker.bindPopup(`
+                <b style="color:#065f46;">MASJID JAMI' DARUSSALAM</b><br>
+                JL DALOM BANDAR PEMATANG TAHALO<br>
+                <small>Kec. Jabung, Lampung Timur</small>
+            `).openPopup();
+        }
+
+        // Fungsi Share
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: "Masjid Jami' DARUSSALAM Pematang Tahalo",
+                    text: "Profil Resmi & Laporan Kas Masjid Jami' DARUSSALAM (ID SIMAS: 01.4.08.07.03.000020)",
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert("Tautan web berhasil disalin!");
+            }
+        }
+
+        window.onload = function() {
+            initMap();
+            loadDataFromGoogleSheets();
+            document.getElementById('current-date-text').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) + " · KAB. LAMPUNG TIMUR";
+        };
+    </script>
+</body>
+</html>
