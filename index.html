@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masjid Jami' DARUSSALAM Pematang Tahalo</title>
+    
+    <!-- Favicon Icon Tab Browser -->
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+    
+    <!-- SEO & Kata Kunci Pencarian Google -->
+    <title>Masjid Jami' DARUSSALAM Pematang Tahalo | Profil & Kas Masjid</title>
+    <meta name="description" content="Website Resmi Masjid Jami' / Jamik Darussalam Pematang Tahalo, Kecamatan Jabung, Kabupaten Lampung Timur. Informasi profil masjid, jadwal sholat, dan laporan kas transparan.">
+    <meta name="keywords" content="Masjid Jamik Darussalam, Masjid Jami Darussalam, Pematang Tahalo, Masjid Pematang Tahalo, Jabung Lampung Timur, Kas Masjid Darussalam">
+    <meta name="robots" content="index, follow">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -24,8 +33,9 @@
     <header class="bg-emerald-800 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-emerald-700 border border-amber-300 flex items-center justify-center text-amber-300 font-bold text-xl shadow">
-                    <i class="fa-solid fa-mosque"></i>
+                <!-- LOGO FOTO MASJID -->
+                <div class="w-10 h-10 rounded-full border-2 border-amber-300 overflow-hidden shadow flex-shrink-0 bg-emerald-900">
+                    <img src="favicon.jpg" alt="Logo Masjid Jami' Darussalam" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <div class="flex items-center gap-1.5">
@@ -37,12 +47,15 @@
             </div>
 
             <!-- Navigasi Menu Tab -->
-            <div class="flex items-center bg-emerald-900/70 p-1 rounded-xl border border-emerald-700/60">
-                <button onclick="switchTab('profil')" id="tab-btn-profil" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow">
+            <div class="flex items-center bg-emerald-900/70 p-1 rounded-xl border border-emerald-700/60 gap-1 overflow-x-auto">
+                <button onclick="switchTab('profil')" id="tab-btn-profil" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap">
                     <i class="fa-solid fa-circle-info mr-1"></i> Profil
                 </button>
-                <button onclick="switchTab('keuangan')" id="tab-btn-keuangan" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white">
-                    <i class="fa-solid fa-wallet mr-1"></i> Kas Masjid (LIVE)
+                <button onclick="switchTab('kegiatan')" id="tab-btn-kegiatan" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap">
+                    <i class="fa-solid fa-calendar-days mr-1"></i> Kegiatan & Galeri
+                </button>
+                <button onclick="switchTab('keuangan')" id="tab-btn-keuangan" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap">
+                    <i class="fa-solid fa-wallet mr-1"></i> Kas (LIVE)
                 </button>
             </div>
         </div>
@@ -69,10 +82,6 @@
 
             <!-- HERO CARD PROFIL -->
             <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 opacity-5 text-slate-900 pointer-events-none">
-                    <i class="fa-solid fa-mosque text-9xl"></i>
-                </div>
-
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
                         <div class="flex flex-wrap gap-2 mb-2">
@@ -95,6 +104,11 @@
                             <i class="fa-solid fa-share-nodes"></i> Bagikan
                         </button>
                     </div>
+                </div>
+
+                <!-- FOTO UTAMA MASJID -->
+                <div class="mt-5 rounded-2xl overflow-hidden border border-slate-200 shadow-sm max-h-72">
+                    <img src="favicon.jpg" alt="Foto Masjid Jami' Darussalam Pematang Tahalo" class="w-full h-full object-cover">
                 </div>
 
                 <!-- SIMAS Identitas Card & Kontak Grid -->
@@ -255,7 +269,68 @@
 
 
         <!-- ========================================================================= -->
-        <!-- TAB 2: MENU KEUANGAN KAS MASJID (LIVE GOOGLE SHEETS)                      -->
+        <!-- TAB 2: KEGIATAN & GALERI (UPLOAD FOTO/VIDEO & RUANG EDIT OPERATOR)        -->
+        <!-- ========================================================================= -->
+        <section id="tab-kegiatan" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+                
+                <!-- HEADER SEKSI KEGIATAN -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">Galeri & Dokumentasi Kegiatan</h3>
+                        <p class="text-xs text-slate-400">Dokumentasi foto dan video kegiatan ibadah serta sosial majelis</p>
+                    </div>
+
+                    <!-- Panel Upload Khusus Operator/Pengurus -->
+                    <div id="panel-upload-kegiatan" class="hidden">
+                        <label class="cursor-pointer px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow transition">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Foto / Video
+                            <input type="file" accept="image/*,video/*" class="hidden" onchange="uploadMediaKegiatan(event)">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- RUANG CATATAN KEGIATAN (Hanya Operator yang Bisa Edit) -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                            <i class="fa-solid fa-bullhorn text-amber-600"></i> Pengumuman & Agenda Kegiatan Operator
+                        </h4>
+                        <span id="badge-mode-edit-kegiatan" class="text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-bold">Hanya Baca</span>
+                    </div>
+
+                    <!-- Tampilan Teks Pengumuman -->
+                    <div id="text-pengumuman-kegiatan" class="text-xs text-slate-700 leading-relaxed font-medium p-2 bg-white rounded-xl border border-slate-100">
+                        Selamat datang di halaman galeri dokumentasi Masjid Jami' Darussalam Pematang Tahalo.
+                    </div>
+
+                    <!-- Form Edit Operator (Awalnya tersembunyi) -->
+                    <div id="form-edit-kegiatan-operator" class="hidden space-y-2 pt-2">
+                        <textarea id="input-catatan-kegiatan" class="w-full text-xs p-3 bg-white border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium" rows="3" placeholder="Tulis pengumuman atau agenda baru di sini..."></textarea>
+                        <button onclick="simpanCatatanKegiatan()" class="px-4 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl shadow transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Catatan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- GRID CONTAINER FOTO & VIDEO KEGIATAN -->
+                <div id="galeri-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Foto Bawaan / Contoh Utama -->
+                    <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                        <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-48 object-cover">
+                        <div class="p-3">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Arsip Utama</span>
+                            <h4 class="text-xs font-bold text-slate-800 mt-1">Gedung Utama Masjid Jami' Darussalam</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ========================================================================= -->
+        <!-- TAB 3: MENU KEUANGAN KAS MASJID (LIVE GOOGLE SHEETS)                      -->
         <!-- ========================================================================= -->
         <section id="tab-keuangan" class="hidden space-y-6">
 
@@ -270,9 +345,15 @@
                         <p class="text-[11px] text-emerald-700">Data bersumber dari pembukuan Google Sheets & inputan pesan WhatsApp Bendahara</p>
                     </div>
                 </div>
-                <button onclick="loadDataFromGoogleSheets()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
-                    <i class="fa-solid fa-rotate" id="refresh-icon"></i> Perbarui Sekarang
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="loadDataFromGoogleSheets()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+                        <i class="fa-solid fa-rotate" id="refresh-icon"></i> Perbarui
+                    </button>
+                    <!-- Tombol Edit Kas Khusus Pengurus -->
+                    <button id="btn-edit-kas" onclick="bukaModalEditKas()" class="hidden px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+                        <i class="fa-solid fa-pen-to-square"></i> Kelola Pembukuan Kas
+                    </button>
+                </div>
             </div>
 
             <!-- 4 KARTU SALDO BAGIAN ATAS -->
@@ -357,6 +438,29 @@
         </section>
     </main>
 
+    <!-- ================= KOTAK LOGIN PENGURUS (PRIVAT TANPA PANDUAN) ================= -->
+    <section class="max-w-6xl w-full mx-auto px-4 mt-6">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm" id="box-login-area">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-lock text-xs"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-sm" id="title-login-box">Akses Pengurus</h4>
+                </div>
+                <span class="text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded-full" id="status-badge-box">Privat</span>
+            </div>
+            
+            <div class="flex gap-2" id="form-sandi-container">
+                <input type="password" id="input-sandi" placeholder="Masukkan Sandi Akses..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-600 font-medium">
+                <button onclick="cekLoginPengurus()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow">
+                    Masuk
+                </button>
+            </div>
+            <p id="info-login" class="text-[11px] mt-2 text-rose-600 font-medium hidden"></p>
+        </div>
+    </section>
+
     <!-- ================= FOOTER RESMI & AMAN ================= -->
     <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
         <div class="max-w-6xl mx-auto px-4 text-center space-y-2">
@@ -373,27 +477,139 @@
     <script>
         // Link CSV Google Sheet resmi milik Anda
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRduE4d1J1KoMLXngqBhTHbNzxGOpqOZ7pCphMWkc9IcHatETrnoClckKTFIUVsZamLYeS4iuwJ7u8/pub?output=csv";
+        let isPengurus = false;
 
         // Tab Navigation
         function switchTab(tab) {
             const tabProfil = document.getElementById('tab-profil');
+            const tabKegiatan = document.getElementById('tab-kegiatan');
             const tabKeuangan = document.getElementById('tab-keuangan');
+            
             const btnProfil = document.getElementById('tab-btn-profil');
+            const btnKegiatan = document.getElementById('tab-btn-kegiatan');
             const btnKeuangan = document.getElementById('tab-btn-keuangan');
+
+            tabProfil.classList.add('hidden');
+            tabKegiatan.classList.add('hidden');
+            tabKeuangan.classList.add('hidden');
+
+            btnProfil.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap";
+            btnKegiatan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap";
+            btnKeuangan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap";
 
             if (tab === 'profil') {
                 tabProfil.classList.remove('hidden');
-                tabKeuangan.classList.add('hidden');
-                btnProfil.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow";
-                btnKeuangan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white";
+                btnProfil.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap";
                 setTimeout(() => { if (window.map) window.map.invalidateSize(); }, 200);
-            } else {
-                tabProfil.classList.add('hidden');
+            } else if (tab === 'kegiatan') {
+                tabKegiatan.classList.remove('hidden');
+                btnKegiatan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap";
+            } else if (tab === 'keuangan') {
                 tabKeuangan.classList.remove('hidden');
-                btnKeuangan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow";
-                btnProfil.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white";
+                btnKeuangan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap";
                 loadDataFromGoogleSheets();
             }
+        }
+
+        // System Login Operator / Pengurus
+        function cekLoginPengurus() {
+            const sandi = document.getElementById('input-sandi').value.trim();
+            const info = document.getElementById('info-login');
+            if (sandi === "DARUSSALAM") {
+                isPengurus = true;
+                info.classList.remove('hidden');
+                info.className = "text-[11px] mt-2 text-emerald-600 font-bold";
+                info.textContent = "Akses diberikan. Mode pengurus/operator aktif.";
+                
+                setTimeout(() => {
+                    // Tampilkan Fitur Khusus Operator
+                    document.getElementById('panel-upload-kegiatan').classList.remove('hidden');
+                    document.getElementById('form-edit-kegiatan-operator').classList.remove('hidden');
+                    document.getElementById('btn-edit-kas').classList.remove('hidden');
+                    
+                    document.getElementById('badge-mode-edit-kegiatan').className = "text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold";
+                    document.getElementById('badge-mode-edit-kegiatan').textContent = "Mode Operator Edit";
+
+                    document.getElementById('title-login-box').textContent = "Pengaturan Pengurus";
+                    document.getElementById('status-badge-box').className = "text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full";
+                    document.getElementById('status-badge-box').textContent = "Aktif";
+                    document.getElementById('form-sandi-container').innerHTML = `<button onclick="logoutPengurus()" class="w-full py-2 bg-rose-700 hover:bg-rose-800 text-white rounded-xl text-xs font-bold transition shadow">Keluar Sesi Pengurus</button>`;
+                }, 800);
+            } else {
+                info.classList.remove('hidden');
+                info.className = "text-[11px] mt-2 text-rose-600 font-medium";
+                info.textContent = "Sandi tidak valid.";
+                document.getElementById('input-sandi').value = '';
+            }
+        }
+
+        function logoutPengurus() {
+            location.reload();
+        }
+
+        // Upload Media Foto/Video Khusus Pengurus
+        function uploadMediaKegiatan(event) {
+            if (!isPengurus) {
+                alert("Akses ditolak! Hanya operator/pengurus yang dapat mengunggah media.");
+                return;
+            }
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                const isVideo = file.type.startsWith('video/');
+
+                reader.onload = function(e) {
+                    const container = document.getElementById('galeri-container');
+                    const div = document.createElement('div');
+                    div.className = "bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm";
+                    
+                    if (isVideo) {
+                        div.innerHTML = `
+                            <video controls class="w-full h-48 object-cover">
+                                <source src="${e.target.result}" type="${file.type}">
+                            </video>
+                            <div class="p-3">
+                                <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">Video Kegiatan</span>
+                                <h4 class="text-xs font-bold text-slate-800 mt-1">${file.name}</h4>
+                            </div>
+                        `;
+                    } else {
+                        div.innerHTML = `
+                            <img src="${e.target.result}" alt="Foto Kegiatan" class="w-full h-48 object-cover">
+                            <div class="p-3">
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Foto Kegiatan</span>
+                                <h4 class="text-xs font-bold text-slate-800 mt-1">${file.name}</h4>
+                            </div>
+                        `;
+                    }
+
+                    container.prepend(div);
+                    alert("Media berhasil diunggah!");
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Edit Catatan/Pengumuman Kegiatan oleh Operator
+        function simpanCatatanKegiatan() {
+            if (!isPengurus) {
+                alert("Akses ditolak!");
+                return;
+            }
+            const teksBaru = document.getElementById('input-catatan-kegiatan').value.trim();
+            if (teksBaru !== "") {
+                document.getElementById('text-pengumuman-kegiatan').textContent = teksBaru;
+                alert("Catatan pengumuman kegiatan berhasil diperbarui!");
+            }
+        }
+
+        // Kelola Pembukuan Kas (Google Sheets)
+        function bukaModalEditKas() {
+            if (!isPengurus) {
+                alert("Akses ditolak!");
+                return;
+            }
+            window.open("https://docs.google.com/spreadsheets/", "_blank");
         }
 
         // Format Rupiah
