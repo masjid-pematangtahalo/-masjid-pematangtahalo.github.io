@@ -20,8 +20,6 @@
     <!-- Leaflet Peta OpenStreetMap -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- PapaParse untuk Baca Google Sheet CSV -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
@@ -330,7 +328,7 @@
 
 
         <!-- ========================================================================= -->
-        <!-- TAB 3: MENU KEUANGAN KAS MASJID (LIVE GOOGLE SHEETS)                      -->
+        <!-- TAB 3: MENU KEUANGAN KAS MASJID (LIVE GOOGLE SHEETS & MANUAL WEB EDIT)    -->
         <!-- ========================================================================= -->
         <section id="tab-keuangan" class="hidden space-y-6">
 
@@ -342,18 +340,41 @@
                     </div>
                     <div>
                         <h4 class="text-xs font-bold text-emerald-950">Laporan Kas Online & Transparan</h4>
-                        <p class="text-[11px] text-emerald-700">Data bersumber dari pembukuan Google Sheets & inputan pesan WhatsApp Bendahara</p>
+                        <p class="text-[11px] text-emerald-700">Data bersumber dari Google Apps Script & dapat diedit/dihapus manual di web</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="loadDataFromGoogleSheets()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
                         <i class="fa-solid fa-rotate" id="refresh-icon"></i> Perbarui
                     </button>
-                    <!-- Tombol Edit Kas Khusus Pengurus -->
-                    <button id="btn-edit-kas" onclick="bukaModalEditKas()" class="hidden px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
-                        <i class="fa-solid fa-pen-to-square"></i> Kelola Pembukuan Kas
+                    <!-- Tombol Tambah Kas Manual Khusus Pengurus -->
+                    <button id="btn-edit-kas" onclick="bukaModalTambahKas()" class="hidden px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+                        <i class="fa-solid fa-plus"></i> Tambah Transaksi Manual
                     </button>
                 </div>
+            </div>
+
+            <!-- FORM TAMBAH/EDIT TRANSAKSI MANUAL (Hanya Muncul Jika Mode Pengurus Aktif) -->
+            <div id="panel-form-manual" class="hidden bg-white p-5 rounded-3xl border-2 border-amber-400 shadow-sm space-y-3">
+                <div class="flex justify-between items-center">
+                    <h4 class="text-xs font-bold text-slate-800 uppercase" id="form-title-manual">Tambah Transaksi Kas Baru</h4>
+                    <button onclick="tutupFormManual()" class="text-rose-600 text-xs font-bold"><i class="fa-solid fa-xmark"></i> Batal</button>
+                </div>
+                <input type="hidden" id="edit-index" value="-1">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                    <input type="date" id="input-tgl" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                    <select id="input-kat" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold">
+                        <option value="JUMAT">JUMAT (Kotak Jumat)</option>
+                        <option value="MASUK">MASUK (Pemasukan Lain)</option>
+                        <option value="KELUAR">KELUAR (Pengeluaran)</option>
+                        <option value="KAS_AWAL">KAS_AWAL (Saldo Awal)</option>
+                    </select>
+                    <input type="text" id="input-ket" placeholder="Keterangan / Uraian..." class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                    <input type="number" id="input-nom" placeholder="Nominal (Angka saja)..." class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                </div>
+                <button onclick="simpanTransaksiManual()" class="w-full py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition shadow">
+                    Simpan Perubahan ke Web
+                </button>
             </div>
 
             <!-- 4 KARTU SALDO BAGIAN ATAS -->
@@ -399,7 +420,7 @@
                         <p class="text-xs text-slate-400">Pencatatan kas masuk dan kas keluar</p>
                     </div>
                     <span id="sync-status" class="text-[11px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full">
-                        <i class="fa-solid fa-circle-check"></i> Terhubung Google Sheets
+                        <i class="fa-solid fa-circle-check"></i> Terhubung Google Sheets & Web Manual
                     </span>
                 </div>
 
@@ -411,10 +432,11 @@
                                 <th class="p-3">Kategori</th>
                                 <th class="p-3">Keterangan / Uraian</th>
                                 <th class="p-3 text-right">Nominal</th>
+                                <th class="p-3 text-center action-col hidden">Aksi Web</th>
                             </tr>
                         </thead>
                         <tbody id="table-body" class="divide-y divide-slate-100 text-slate-700">
-                            <tr><td colspan="4" class="p-6 text-center text-slate-400 text-xs">Sedang mengambil data terbaru...</td></tr>
+                            <tr><td colspan="5" class="p-6 text-center text-slate-400 text-xs">Sedang mengambil data terbaru...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -475,9 +497,10 @@
     </footer>
 
     <script>
-        // Link CSV Google Sheet resmi milik Anda
-        const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRduE4d1J1KoMLXngqBhTHbNzxGOpqOZ7pCphMWkc9IcHatETrnoClckKTFIUVsZamLYeS4iuwJ7u8/pub?output=csv";
+        // URL Web App Google Apps Script resmi milik Anda
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEBPS5EurOaTzvk3VnKEgvwZ7jedVJcm28vBBEFk1HxphYFZQEEGuj3eWB8CuSS4CI/exec";
         let isPengurus = false;
+        let globalMasterData = [];
 
         // Tab Navigation
         function switchTab(tab) {
@@ -527,6 +550,9 @@
                     document.getElementById('form-edit-kegiatan-operator').classList.remove('hidden');
                     document.getElementById('btn-edit-kas').classList.remove('hidden');
                     
+                    // Tampilkan Kolom Aksi di Tabel Kas
+                    document.querySelectorAll('.action-col').forEach(el => el.classList.remove('hidden'));
+                    
                     document.getElementById('badge-mode-edit-kegiatan').className = "text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold";
                     document.getElementById('badge-mode-edit-kegiatan').textContent = "Mode Operator Edit";
 
@@ -534,6 +560,9 @@
                     document.getElementById('status-badge-box').className = "text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full";
                     document.getElementById('status-badge-box').textContent = "Aktif";
                     document.getElementById('form-sandi-container').innerHTML = `<button onclick="logoutPengurus()" class="w-full py-2 bg-rose-700 hover:bg-rose-800 text-white rounded-xl text-xs font-bold transition shadow">Keluar Sesi Pengurus</button>`;
+                    
+                    // Render ulang tabel agar tombol aksi muncul di setiap baris
+                    hitungDanTampilkanData(globalMasterData);
                 }, 800);
             } else {
                 info.classList.remove('hidden');
@@ -603,62 +632,142 @@
             }
         }
 
-        // Kelola Pembukuan Kas (Google Sheets)
-        function bukaModalEditKas() {
+        // Panel Kelola / Tambah Kas Manual Web
+        function bukaModalTambahKas() {
             if (!isPengurus) {
                 alert("Akses ditolak!");
                 return;
             }
-            window.open("https://docs.google.com/spreadsheets/", "_blank");
+            document.getElementById('panel-form-manual').classList.remove('hidden');
+            document.getElementById('form-title-manual').textContent = "Tambah Transaksi Kas Baru";
+            document.getElementById('edit-index').value = "-1";
+            document.getElementById('input-tgl').value = new Date().toISOString().split('T')[0];
+            document.getElementById('input-ket').value = '';
+            document.getElementById('input-nom').value = '';
+        }
+
+        function tutupFormManual() {
+            document.getElementById('panel-form-manual').classList.add('hidden');
+        }
+
+        // Simpan / Edit Transaksi Manual ke LocalStorage Browser
+        function simpanTransaksiManual() {
+            const tgl = document.getElementById('input-tgl').value;
+            const kat = document.getElementById('input-kat').value;
+            const ket = document.getElementById('input-ket').value.trim();
+            const nom = parseFloat(document.getElementById('input-nom').value) || 0;
+            const editIdx = parseInt(document.getElementById('edit-index').value);
+
+            if (!tgl || !ket || nom <= 0) {
+                alert("Mohon lengkapi tanggal, keterangan, dan nominal dengan benar!");
+                return;
+            }
+
+            let manualData = JSON.parse(localStorage.getItem('masjid_manual_transaksi') || '[]');
+
+            if (editIdx === -1) {
+                manualData.push({ tanggal: tgl, kategori: kat, keterangan: ket, nominal: nom });
+            } else {
+                manualData[editIdx] = { tanggal: tgl, kategori: kat, keterangan: ket, nominal: nom };
+            }
+
+            localStorage.setItem('masjid_manual_transaksi', JSON.stringify(manualData));
+            tutupFormManual();
+            hitungDanTampilkanData(globalMasterData);
+            alert("Data kas berhasil disimpan di web!");
+        }
+
+        function editTransaksiManual(index) {
+            const manualData = JSON.parse(localStorage.getItem('masjid_manual_transaksi') || '[]');
+            const item = manualData[index];
+            if (item) {
+                document.getElementById('panel-form-manual').classList.remove('hidden');
+                document.getElementById('form-title-manual').textContent = "Edit Transaksi Manual Web";
+                document.getElementById('edit-index').value = index;
+                document.getElementById('input-tgl').value = item.tanggal;
+                document.getElementById('input-kat').value = item.kategori;
+                document.getElementById('input-ket').value = item.keterangan;
+                document.getElementById('input-nom').value = item.nominal;
+            }
+        }
+
+        function hapusTransaksiManual(index) {
+            if (confirm("Yakin ingin menghapus transaksi web ini?")) {
+                let manualData = JSON.parse(localStorage.getItem('masjid_manual_transaksi') || '[]');
+                manualData.splice(index, 1);
+                localStorage.setItem('masjid_manual_transaksi', JSON.stringify(manualData));
+                hitungDanTampilkanData(globalMasterData);
+            }
+        }
+
+        function hapusServerRow(serverKey) {
+            if (confirm("Yakin ingin menghapus data ini dari tampilan web?")) {
+                let hiddenServerRows = JSON.parse(localStorage.getItem('masjid_hidden_server_rows') || '[]');
+                hiddenServerRows.push(serverKey);
+                localStorage.setItem('masjid_hidden_server_rows', JSON.stringify(hiddenServerRows));
+                hitungDanTampilkanData(globalMasterData);
+            }
         }
 
         // Format Rupiah
         const toRupiah = (val) => 'Rp ' + Number(val || 0).toLocaleString('id-ID');
 
-        // Membaca Data dari Google Sheets
+        // Membaca Data dari Google Apps Script Web App
         function loadDataFromGoogleSheets() {
             const refreshIcon = document.getElementById('refresh-icon');
             if (refreshIcon) refreshIcon.classList.add('fa-spin');
 
-            Papa.parse(GOOGLE_SHEET_CSV_URL, {
-                download: true,
-                header: true,
-                skipEmptyLines: true,
-                complete: function(results) {
-                    processRows(results.data);
+            fetch(GOOGLE_APPS_SCRIPT_URL)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success" || data.riwayat) {
+                        globalMasterData = data.riwayat || [];
+                        hitungDanTampilkanData(globalMasterData);
+                    } else {
+                        throw new Error(data.message || "Gagal memproses data");
+                    }
                     if (refreshIcon) refreshIcon.classList.remove('fa-spin');
-                },
-                error: function(err) {
+                })
+                .catch(err => {
+                    console.error(err);
                     document.getElementById('sync-status').innerHTML = '<span class="text-rose-700 bg-rose-100 px-2 py-0.5 rounded font-bold">Gagal Mengambil Data</span>';
                     if (refreshIcon) refreshIcon.classList.remove('fa-spin');
-                }
-            });
+                });
         }
 
-        function processRows(rows) {
+        function hitungDanTampilkanData(serverRiwayat) {
+            // Saring data server yang disembunyikan operator lewat tombol tong sampah
+            const hiddenServerRows = JSON.parse(localStorage.getItem('masjid_hidden_server_rows') || '[]');
+            let filteredServerRows = [];
+            
+            serverRiwayat.forEach((item, idx) => {
+                const rowKey = `${item.tanggal}_${item.kategori}_${item.keterangan}_${item.nominal}_${idx}`;
+                if (!hiddenServerRows.includes(rowKey)) {
+                    filteredServerRows.push({ ...item, serverKey: rowKey, source: 'server' });
+                }
+            });
+
+            // Gabungkan data server aktif + data manual tambahan web
+            const manualData = JSON.parse(localStorage.getItem('masjid_manual_transaksi') || '[]');
+            let combinedRiwayat = [...filteredServerRows, ...manualData];
+
             let kasAwal = 0;
             let totalJumat = 0;
             let totalMasukLain = 0;
             let totalKeluar = 0;
-            let transactionRows = [];
 
-            rows.forEach(row => {
-                const kategori = (row.Kategori || '').trim().toUpperCase();
-                const nominal = parseFloat(String(row.Nominal || '0').replace(/[^0-9.-]/g, '')) || 0;
-                const tanggal = row.Tanggal || '';
-                const keterangan = row.Keterangan || '';
+            combinedRiwayat.forEach(item => {
+                const kategori = String(item.kategori || '').trim().toUpperCase();
+                const nominal = Number(item.nominal) || 0;
 
                 if (kategori === 'KAS_AWAL') {
                     kasAwal += nominal;
                 } else if (kategori === 'JUMAT') {
                     totalJumat += nominal;
-                    transactionRows.push({ tanggal, kategori, keterangan, nominal, type: 'MASUK' });
                 } else if (kategori === 'MASUK') {
                     totalMasukLain += nominal;
-                    transactionRows.push({ tanggal, kategori, keterangan, nominal, type: 'MASUK' });
                 } else if (kategori === 'KELUAR') {
                     totalKeluar += nominal;
-                    transactionRows.push({ tanggal, kategori, keterangan, nominal, type: 'KELUAR' });
                 }
             });
 
@@ -675,32 +784,55 @@
             document.getElementById('card-saldo-total').textContent = toRupiah(kasAkhir);
             document.getElementById('label-hari-ini').textContent = 'Per ' + new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-            // Update Isi Tabel
+            // Update Isi Tabel Mutasi
             const tbody = document.getElementById('table-body');
-            transactionRows.reverse();
+            
+            let allRowsForTable = [];
+            
+            filteredServerRows.forEach(item => {
+                allRowsForTable.push({ ...item, source: 'server' });
+            });
 
-            if (transactionRows.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 text-xs">Belum ada catatan mutasi kas.</td></tr>`;
+            manualData.forEach((item, idx) => {
+                allRowsForTable.push({ ...item, source: 'manual', manualIndex: idx });
+            });
+
+            allRowsForTable.reverse();
+
+            if (allRowsForTable.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 text-xs">Belum ada catatan mutasi kas.</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = transactionRows.map(item => `
-                <tr class="hover:bg-slate-50 transition border-b">
-                    <td class="p-3 text-xs whitespace-nowrap text-slate-500">${item.tanggal}</td>
-                    <td class="p-3">
-                        ${item.kategori === 'JUMAT' 
-                            ? `<span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-mosque text-[10px]"></i> Jamaah Jumat</span>`
-                            : item.type === 'MASUK'
-                            ? `<span class="bg-blue-100 text-blue-700 text-[11px] font-semibold px-2 py-0.5 rounded-full">Pemasukan Lain</span>`
-                            : `<span class="bg-rose-100 text-rose-700 text-[11px] font-semibold px-2 py-0.5 rounded-full">Pengeluaran</span>`
-                        }
-                    </td>
-                    <td class="p-3 text-xs font-semibold text-slate-800">${item.keterangan}</td>
-                    <td class="p-3 text-xs font-bold text-right ${item.type === 'MASUK' ? 'text-emerald-600' : 'text-rose-600'}">
-                        ${item.type === 'MASUK' ? '+' : '-'} ${toRupiah(item.nominal)}
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = allRowsForTable.map(item => {
+                const isMasuk = item.kategori === 'JUMAT' || item.kategori === 'MASUK';
+                return `
+                    <tr class="hover:bg-slate-50 transition border-b">
+                        <td class="p-3 text-xs whitespace-nowrap text-slate-500">${item.tanggal}</td>
+                        <td class="p-3">
+                            ${item.kategori === 'JUMAT' 
+                                ? `<span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-mosque text-[10px]"></i> Jamaah Jumat</span>`
+                                : isMasuk
+                                ? `<span class="bg-blue-100 text-blue-700 text-[11px] font-semibold px-2 py-0.5 rounded-full">Pemasukan Lain</span>`
+                                : `<span class="bg-rose-100 text-rose-700 text-[11px] font-semibold px-2 py-0.5 rounded-full">Pengeluaran</span>`
+                            }
+                            ${item.source === 'manual' ? `<span class="ml-1 text-[9px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-mono">Web Manual</span>` : ''}
+                        </td>
+                        <td class="p-3 text-xs font-semibold text-slate-800">${item.keterangan}</td>
+                        <td class="p-3 text-xs font-bold text-right ${isMasuk ? 'text-emerald-600' : 'text-rose-600'}">
+                            ${isMasuk ? '+' : '-'} ${toRupiah(item.nominal)}
+                        </td>
+                        <td class="p-3 text-center action-col ${isPengurus ? '' : 'hidden'}">
+                            ${item.source === 'manual' ? `
+                                <button onclick="editTransaksiManual(${item.manualIndex})" class="px-2 py-1 bg-amber-500 text-slate-950 rounded text-[10px] font-bold mr-1" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                                <button onclick="hapusTransaksiManual(${item.manualIndex})" class="px-2 py-1 bg-rose-600 text-white rounded text-[10px] font-bold" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                            ` : `
+                                <button onclick="hapusServerRow('${item.serverKey}')" class="px-2 py-1 bg-rose-600 text-white rounded text-[10px] font-bold" title="Hapus dari Web"><i class="fa-solid fa-trash"></i></button>
+                            `}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         // Inisialisasi Peta Leaflet (Koordinat: -5.433582, 105.724754)
