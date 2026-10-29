@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Favicon Icon Tab Browser -->
+    <!-- Favicon Icon Tab Browser & Google Search -->
     <link rel="icon" type="image/jpeg" href="favicon.jpg">
+    <link rel="apple-touch-icon" href="favicon.jpg">
     
+    <!-- Meta Gambar untuk Pencarian Google & Medsos -->
+    <meta property="og:title" content="Masjid Jami' DARUSSALAM Pematang Tahalo">
+    <meta property="og:description" content="Website Resmi Masjid Jami' Darussalam Pematang Tahalo. Informasi profil, jadwal sholat, dan laporan kas transparan.">
+    <meta property="og:image" content="favicon.jpg">
+    <meta property="og:type" content="website">
+
     <!-- SEO & Kata Kunci Pencarian Google -->
     <title>Masjid Jami' DARUSSALAM Pematang Tahalo | Profil & Kas Masjid</title>
     <meta name="description" content="Website Resmi Masjid Jami' / Jamik Darussalam Pematang Tahalo, Kecamatan Jabung, Kabupaten Lampung Timur. Informasi profil masjid, jadwal sholat, dan laporan kas transparan.">
@@ -29,30 +36,34 @@
 
     <!-- ================= HEADER RESMI MASJID ================= -->
     <header class="bg-emerald-800 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <!-- LOGO FOTO MASJID -->
-                <div class="w-10 h-10 rounded-full border-2 border-amber-300 overflow-hidden shadow flex-shrink-0 bg-emerald-900">
-                    <img src="favicon.jpg" alt="Logo Masjid Jami' Darussalam" class="w-full h-full object-cover">
-                </div>
-                <div>
-                    <div class="flex items-center gap-1.5">
-                        <span class="bg-amber-400 text-slate-900 text-[10px] uppercase font-black px-1.5 py-0.5 rounded shadow-sm">TERDAFTAR RESMI</span>
-                        <h1 class="font-extrabold text-sm sm:text-base tracking-wide leading-tight">DARUSSALAM</h1>
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
+                <div class="flex items-center space-x-3">
+                    <!-- LOGO FOTO MASJID -->
+                    <div class="w-10 h-10 rounded-full border-2 border-amber-300 overflow-hidden shadow flex-shrink-0 bg-emerald-900">
+                        <img src="favicon.jpg" alt="Logo Masjid Jami' Darussalam" class="w-full h-full object-cover">
                     </div>
-                    <p class="text-[11px] text-emerald-200">ID SIMAS: 01.4.08.07.03.000020 • Pematang Tahalo</p>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="bg-amber-400 text-slate-900 text-[10px] uppercase font-black px-1.5 py-0.5 rounded shadow-sm">TERDAFTAR RESMI</span>
+                            <h1 class="font-extrabold text-sm sm:text-base tracking-wide leading-tight">DARUSSALAM</h1>
+                        </div>
+                        <p class="text-[11px] text-emerald-200">ID SIMAS: 01.4.08.07.03.000020 • Pematang Tahalo</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Navigasi Menu Tab -->
-            <div class="flex items-center bg-emerald-900/70 p-1 rounded-xl border border-emerald-700/60 gap-1 overflow-x-auto">
-                <button onclick="switchTab('profil')" id="tab-btn-profil" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap">
-                    <i class="fa-solid fa-circle-info mr-1"></i> Profil
-                </button>
-                <button onclick="switchTab('kegiatan')" id="tab-btn-kegiatan" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap">
-                    <i class="fa-solid fa-calendar-days mr-1"></i> Kegiatan & Galeri
-                </button>
-                <button onclick="switchTab('keuangan')" id="tab-btn-keuangan" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap">
+            <!-- Navigasi Menu Tersusun (Profil & Kegiatan di atas, Kas di bawah) -->
+            <div class="flex flex-col gap-1 w-full sm:w-auto">
+                <div class="flex items-center gap-1">
+                    <button onclick="switchTab('profil')" id="tab-btn-profil" class="flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow text-center">
+                        <i class="fa-solid fa-circle-info mr-1"></i> Profil
+                    </button>
+                    <button onclick="switchTab('kegiatan')" id="tab-btn-kegiatan" class="flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white text-center">
+                        <i class="fa-solid fa-calendar-days mr-1"></i> Kegiatan
+                    </button>
+                </div>
+                <button onclick="switchTab('keuangan')" id="tab-btn-keuangan" class="w-full px-3 py-1 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white text-center bg-emerald-900/50 border border-emerald-700/50">
                     <i class="fa-solid fa-wallet mr-1"></i> Kas (LIVE)
                 </button>
             </div>
@@ -117,11 +128,11 @@
                     </div>
                     <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
                         <span class="text-[10px] font-bold text-slate-400 uppercase">Telepon Sekretariat</span>
-                        <p class="text-xs sm:text-sm font-bold text-slate-700 mt-0.5">-</p>
+                        <p class="text-xs sm:text-sm font-bold text-slate-700 mt-0.5" id="view-telp-masjid">-</p>
                     </div>
                     <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
                         <span class="text-[10px] font-bold text-slate-400 uppercase">Email</span>
-                        <p class="text-xs sm:text-sm text-slate-400 mt-0.5 italic">Belum ada</p>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-0.5 italic" id="view-email-masjid">Belum ada</p>
                     </div>
                     <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
                         <span class="text-[10px] font-bold text-slate-400 uppercase">Kementerian Terkait</span>
@@ -160,6 +171,50 @@
                         <p class="text-xs font-bold text-slate-800 mt-1">Remaja Masjid</p>
                     </div>
                 </div>
+            </div>
+
+            <!-- REKENING & DONASI MASJID (BISA DIEDIT OPERATOR) -->
+            <div class="bg-gradient-to-br from-emerald-900 to-slate-900 text-white rounded-3xl p-6 shadow-md space-y-4">
+                <div class="flex justify-between items-center border-b border-emerald-800 pb-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">LAYANAN DONASI & INFAQ</span>
+                        <h4 class="text-base font-bold text-white">Rekening & Saluran Resmi Masjid</h4>
+                    </div>
+                    <button id="btn-edit-rek-toggle" onclick="bukaModalEditRekening()" class="hidden text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-xl shadow">
+                        <i class="fa-solid fa-pen mr-1"></i> Edit Info Rekening
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-emerald-800/50 p-4 rounded-2xl border border-emerald-700/60">
+                        <span class="text-[10px] text-emerald-300 font-bold uppercase">Rekening Bank Pembangunan / Infaq</span>
+                        <p class="text-base sm:text-lg font-black text-amber-300 mt-1 font-mono" id="display-info-rekening">Belum Diatur</p>
+                        <p class="text-xs text-emerald-100 mt-0.5" id="display-info-bank">Atas Nama: Pengurus Masjid Darussalam</p>
+                    </div>
+                    <div class="bg-emerald-800/50 p-4 rounded-2xl border border-emerald-700/60 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] text-emerald-300 font-bold uppercase">Nomor WhatsApp Resmi Sekretariat</span>
+                            <p class="text-base sm:text-lg font-black text-white mt-1 font-mono" id="display-info-wa">Belum Diatur</p>
+                        </div>
+                        <p class="text-[11px] text-emerald-200 mt-1">Gunakan untuk konfirmasi donasi & layanan jamaah.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL EDIT REKENING (KHUSUS OPERATOR) -->
+            <div id="panel-edit-rekening" class="hidden bg-white p-5 rounded-3xl border-2 border-amber-400 shadow-sm space-y-3">
+                <div class="flex justify-between items-center">
+                    <h4 class="text-xs font-bold text-slate-800 uppercase">Pengaturan Nomor Rekening & WhatsApp</h4>
+                    <button onclick="tutupModalEditRekening()" class="text-rose-600 text-xs font-bold"><i class="fa-solid fa-xmark"></i> Batal</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input type="text" id="input-no-rek" placeholder="Nomor Rekening..." class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                    <input type="text" id="input-nama-bank" placeholder="Nama Bank & Atas Nama..." class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                    <input type="text" id="input-no-wa" placeholder="No WA Pengurus..." class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                </div>
+                <button onclick="simpanInfoRekening()" class="w-full py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition shadow">
+                    Simpan Informasi Rekening & WA
+                </button>
             </div>
 
             <!-- JADWAL SHOLAT HARI INI -->
@@ -313,6 +368,35 @@
                             </button>
                         </div>
                     </div>
+                </div>
+
+                <!-- AGENDA & KAJIAN RUTIN (BISA DIEDIT OPERATOR) -->
+                <div class="bg-emerald-50/70 p-5 rounded-3xl border border-emerald-200 space-y-4">
+                    <div class="flex justify-between items-center border-b border-emerald-200 pb-2">
+                        <h4 class="text-xs font-bold text-emerald-900 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-calendar-check text-emerald-700"></i> Agenda & Jadwal Kajian Rutin
+                        </h4>
+                        <button id="btn-edit-agenda-toggle" onclick="bukaModalEditAgenda()" class="hidden text-xs bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-3 py-1 rounded-lg shadow">
+                            <i class="fa-solid fa-pen mr-1"></i> Edit Agenda
+                        </button>
+                    </div>
+                    <div id="display-agenda-box" class="text-xs text-slate-700 leading-relaxed font-medium space-y-2">
+                        <p>• <b>Kajian Ba'da Subuh:</b> Setiap hari Minggu pagi bersama Ustadz setempat.</p>
+                        <p>• <b>Pengajian Rutin Ibu-Ibu:</b> Setiap Hari Jum'at sore ba'da Ashar.</p>
+                        <p>• <b>TPA / Madrasah Anak-Anak:</b> Senin s.d. Jum'at pukul 14.00 WIB.</p>
+                    </div>
+                </div>
+
+                <!-- MODAL EDIT AGENDA (KHUSUS OPERATOR) -->
+                <div id="panel-edit-agenda" class="hidden bg-white p-5 rounded-3xl border-2 border-amber-400 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-xs font-bold text-slate-800 uppercase">Ubah Daftar Agenda & Kajian</h4>
+                        <button onclick="tutupModalEditAgenda()" class="text-rose-600 text-xs font-bold"><i class="fa-solid fa-xmark"></i> Batal</button>
+                    </div>
+                    <textarea id="input-agenda-teks" class="w-full text-xs p-3 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium" rows="4" placeholder="Tulis jadwal agenda/kajian baru di sini..."></textarea>
+                    <button onclick="simpanAgendaBaru()" class="w-full py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition shadow">
+                        Simpan Perubahan Agenda
+                    </button>
                 </div>
 
                 <!-- RUANG CATATAN PENGUMUMAN OPERATOR -->
@@ -488,6 +572,60 @@
         </section>
     </main>
 
+    <!-- KOTAK ASPIRASI & SARAN (TERSIMPAN DI WEB) -->
+    <section class="max-w-6xl w-full mx-auto px-4 mt-6">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-comments text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Kotak Aspirasi & Saran Jamaah</h4>
+                        <p class="text-xs text-slate-400">Sampaikan saran, masukan, atau pertanyaan Anda untuk pengurus masjid</p>
+                    </div>
+                </div>
+                <!-- Tombol Kotak Masuk Khusus Pengurus -->
+                <button id="btn-inbox-toggle" onclick="bukaModalInbox()" class="hidden text-xs bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-3 py-2 rounded-xl shadow flex items-center gap-1.5">
+                    <i class="fa-solid fa-inbox"></i> Kotak Masuk (<span id="inbox-count">0</span>)
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input type="text" id="input-aspirasi-nama" placeholder="Nama Lengkap / Perwakilan Jamaah..." class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium">
+                <select id="input-aspirasi-kategori" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-700">
+                    <option value="Saran & Masukan Fasilitas">Saran & Masukan Fasilitas</option>
+                    <option value="Pertanyaan Seputar Kegiatan">Pertanyaan Seputar Kegiatan</option>
+                    <option value="Konfirmasi Donasi / Infaq">Konfirmasi Donasi / Infaq</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+            <textarea id="input-aspirasi-pesan" placeholder="Tulis isi pesan, saran, atau pertanyaan Anda di sini..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium" rows="3"></textarea>
+            
+            <button onclick="kirimAspirasiWeb()" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow transition">
+                <i class="fa-solid fa-paper-plane text-xs"></i> Kirim Aspirasi ke Pengurus Masjid
+            </button>
+        </div>
+    </section>
+
+    <!-- MODAL KOTAK MASUK / INBOX (KHUSUS PENGURUS) -->
+    <div id="modal-inbox" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-inbox text-xs"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-sm">Kotak Masuk Aspirasi & Saran</h3>
+                </div>
+                <button onclick="tutupModalInbox()" class="text-rose-600 font-bold text-xs"><i class="fa-solid fa-xmark text-base"></i> Tutup</button>
+            </div>
+            <div id="inbox-list-container" class="space-y-3 overflow-y-auto flex-1 pr-1">
+                <p class="text-xs text-slate-400 text-center py-6">Belum ada pesan masuk.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= KOTAK LOGIN PENGURUS (PRIVAT TANPA PANDUAN) ================= -->
     <section class="max-w-6xl w-full mx-auto px-4 mt-6">
         <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm" id="box-login-area">
@@ -544,43 +682,47 @@
             tabKegiatan.classList.add('hidden');
             tabKeuangan.classList.add('hidden');
 
-            btnProfil.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap";
-            btnKegiatan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap";
-            btnKeuangan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white whitespace-nowrap";
+            const defaultBtnClass = "flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white text-center";
+            const defaultKasClass = "w-full px-3 py-1 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white text-center bg-emerald-900/50 border border-emerald-700/50";
+            
+            btnProfil.className = defaultBtnClass;
+            btnKegiatan.className = defaultBtnClass;
+            btnKeuangan.className = defaultKasClass;
 
             if (tab === 'profil') {
                 tabProfil.classList.remove('hidden');
-                btnProfil.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap";
+                btnProfil.className = "flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow text-center";
                 muatGaleriKegiatan();
                 setTimeout(() => { if (window.map) window.map.invalidateSize(); }, 200);
             } else if (tab === 'kegiatan') {
                 tabKegiatan.classList.remove('hidden');
-                btnKegiatan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap";
+                btnKegiatan.className = "flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow text-center";
                 muatGaleriKegiatan();
             } else if (tab === 'keuangan') {
                 tabKeuangan.classList.remove('hidden');
-                btnKeuangan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap";
+                btnKeuangan.className = "w-full px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow text-center border border-emerald-500";
                 loadDataFromGoogleSheets();
             }
         }
 
-        // System Login Operator / Pengurus
+        // System Login Operator / Pengurus (Sandi: DARUSSALAMKU)
         function cekLoginPengurus() {
             const sandi = document.getElementById('input-sandi').value.trim();
             const info = document.getElementById('info-login');
-            if (sandi === "DARUSSALAM") {
+            if (sandi === "DARUSSALAMKU") {
                 isPengurus = true;
                 info.classList.remove('hidden');
                 info.className = "text-[11px] mt-2 text-emerald-600 font-bold";
                 info.textContent = "Akses diberikan. Mode pengurus/operator aktif.";
                 
                 setTimeout(() => {
-                    // Tampilkan Fitur Khusus Operator
                     document.getElementById('panel-upload-kegiatan').classList.remove('hidden');
                     document.getElementById('form-edit-kegiatan-operator').classList.remove('hidden');
                     document.getElementById('btn-edit-kas').classList.remove('hidden');
+                    document.getElementById('btn-edit-rek-toggle').classList.remove('hidden');
+                    document.getElementById('btn-edit-agenda-toggle').classList.remove('hidden');
+                    document.getElementById('btn-inbox-toggle').classList.remove('hidden');
                     
-                    // Tampilkan Kolom Aksi di Tabel Kas
                     document.querySelectorAll('.action-col').forEach(el => el.classList.remove('hidden'));
                     
                     document.getElementById('badge-mode-edit-kegiatan').className = "text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold";
@@ -591,9 +733,9 @@
                     document.getElementById('status-badge-box').textContent = "Aktif";
                     document.getElementById('form-sandi-container').innerHTML = `<button onclick="logoutPengurus()" class="w-full py-2 bg-rose-700 hover:bg-rose-800 text-white rounded-xl text-xs font-bold transition shadow">Keluar Sesi Pengurus</button>`;
                     
-                    // Render ulang galeri & tabel
                     muatGaleriKegiatan();
                     hitungDanTampilkanData(globalMasterData);
+                    updateInboxCount();
                 }, 800);
             } else {
                 info.classList.remove('hidden');
@@ -605,6 +747,155 @@
 
         function logoutPengurus() {
             location.reload();
+        }
+
+        // Simpan Aspirasi ke Web (LocalStorage)
+        function kirimAspirasiWeb() {
+            const nama = document.getElementById('input-aspirasi-nama').value.trim();
+            const kategori = document.getElementById('input-aspirasi-kategori').value;
+            const pesan = document.getElementById('input-aspirasi-pesan').value.trim();
+
+            if (!nama || !pesan) {
+                alert("Mohon isi Nama Lengkap dan Pesan/Saran terlebih dahulu!");
+                return;
+            }
+
+            let inboxList = JSON.parse(localStorage.getItem('masjid_inbox_aspirasi') || '[]');
+            inboxList.push({
+                tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                nama: nama,
+                kategori: kategori,
+                pesan: pesan
+            });
+
+            localStorage.setItem('masjid_inbox_aspirasi', JSON.stringify(inboxList));
+            
+            document.getElementById('input-aspirasi-nama').value = '';
+            document.getElementById('input-aspirasi-pesan').value = '';
+            
+            alert("Alhamdulillah, saran atau aspirasi Anda berhasil dikirim dan tersimpan di sistem pengurus masjid.");
+            if(isPengurus) updateInboxCount();
+        }
+
+        function updateInboxCount() {
+            let inboxList = JSON.parse(localStorage.getItem('masjid_inbox_aspirasi') || '[]');
+            document.getElementById('inbox-count').textContent = inboxList.length;
+        }
+
+        function bukaModalInbox() {
+            if (!isPengurus) return;
+            const container = document.getElementById('inbox-list-container');
+            let inboxList = JSON.parse(localStorage.getItem('masjid_inbox_aspirasi') || '[]');
+
+            if (inboxList.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">Belum ada pesan masuk.</p>`;
+            } else {
+                container.innerHTML = inboxList.slice().reverse().map((item, idx) => {
+                    const actualIdx = inboxList.length - 1 - idx;
+                    return `
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">${item.kategori}</span>
+                                    <h4 class="text-xs font-bold text-slate-800 mt-1">${item.nama}</h4>
+                                </div>
+                                <span class="text-[10px] text-slate-400">${item.tanggal}</span>
+                            </div>
+                            <p class="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-100">${item.pesan}</p>
+                            <button onclick="hapusInboxItem(${actualIdx})" class="text-[10px] bg-rose-600 hover:bg-rose-700 text-white font-bold px-2.5 py-1 rounded-lg">
+                                <i class="fa-solid fa-trash mr-1"></i> Hapus Pesan
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+            document.getElementById('modal-inbox').classList.remove('hidden');
+        }
+
+        function tutupModalInbox() {
+            document.getElementById('modal-inbox').classList.add('hidden');
+        }
+
+        function hapusInboxItem(index) {
+            if (confirm("Hapus pesan aspirasi ini?")) {
+                let inboxList = JSON.parse(localStorage.getItem('masjid_inbox_aspirasi') || '[]');
+                inboxList.splice(index, 1);
+                localStorage.setItem('masjid_inbox_aspirasi', JSON.stringify(inboxList));
+                bukaModalInbox();
+                updateInboxCount();
+            }
+        }
+
+        // Manajemen Info Rekening & WhatsApp via LocalStorage
+        function muatInfoRekening() {
+            const rekData = JSON.parse(localStorage.getItem('masjid_info_rekening') || 'null');
+            if (rekData) {
+                document.getElementById('display-info-rekening').textContent = rekData.noRek || "Belum Diatur";
+                document.getElementById('display-info-bank').textContent = rekData.namaBank || "Atas Nama: Pengurus Masjid Darussalam";
+                document.getElementById('display-info-wa').textContent = rekData.noWa || "Belum Diatur";
+                if(document.getElementById('view-telp-masjid')) {
+                    document.getElementById('view-telp-masjid').textContent = rekData.noWa || "-";
+                }
+            }
+        }
+
+        function bukaModalEditRekening() {
+            document.getElementById('panel-edit-rekening').classList.remove('hidden');
+            const rekData = JSON.parse(localStorage.getItem('masjid_info_rekening') || 'null');
+            if (rekData) {
+                document.getElementById('input-no-rek').value = rekData.noRek || '';
+                document.getElementById('input-nama-bank').value = rekData.namaBank || '';
+                document.getElementById('input-no-wa').value = rekData.noWa || '';
+            }
+        }
+
+        function tutupModalEditRekening() {
+            document.getElementById('panel-edit-rekening').classList.add('hidden');
+        }
+
+        function simpanInfoRekening() {
+            const noRek = document.getElementById('input-no-rek').value.trim();
+            const namaBank = document.getElementById('input-nama-bank').value.trim();
+            const noWa = document.getElementById('input-no-wa').value.trim();
+
+            const rekData = { noRek, namaBank, noWa };
+            localStorage.setItem('masjid_info_rekening', JSON.stringify(rekData));
+            tutupModalEditRekening();
+            muatInfoRekening();
+            alert("Informasi rekening dan WhatsApp berhasil diperbarui!");
+        }
+
+        // Manajemen Agenda & Kajian Rutin via LocalStorage
+        function muatAgendaKajian() {
+            const agendaText = localStorage.getItem('masjid_agenda_kajian');
+            if (agendaText) {
+                const formatted = agendaText.split('\n').map(line => `<p>${line}</p>`).join('');
+                document.getElementById('display-agenda-box').innerHTML = formatted;
+            }
+        }
+
+        function bukaModalEditAgenda() {
+            document.getElementById('panel-edit-agenda').classList.remove('hidden');
+            const agendaText = localStorage.getItem('masjid_agenda_kajian');
+            if (agendaText) {
+                document.getElementById('input-agenda-teks').value = agendaText;
+            } else {
+                document.getElementById('input-agenda-teks').value = "• Kajian Ba'da Subuh: Setiap hari Minggu pagi bersama Ustadz setempat.\n• Pengajian Rutin Ibu-Ibu: Setiap Hari Jum'at sore ba'da Ashar.\n• TPA / Madrasah Anak-Anak: Senin s.d. Jum'at pukul 14.00 WIB.";
+            }
+        }
+
+        function tutupModalEditAgenda() {
+            document.getElementById('panel-edit-agenda').classList.add('hidden');
+        }
+
+        function simpanAgendaBaru() {
+            const teks = document.getElementById('input-agenda-teks').value.trim();
+            if (teks) {
+                localStorage.setItem('masjid_agenda_kajian', teks);
+                tutupModalEditAgenda();
+                muatAgendaKajian();
+                alert("Agenda kajian berhasil diperbarui!");
+            }
         }
 
         // Simpan Kegiatan Baru (Foto/Video + Judul + Deskripsi) ke LocalStorage
@@ -639,7 +930,6 @@
 
                 localStorage.setItem('masjid_galeri_kegiatan', JSON.stringify(galeriList));
                 
-                // Reset form
                 document.getElementById('input-kegiatan-judul').value = '';
                 document.getElementById('input-kegiatan-desc').value = '';
                 fileInput.value = '';
@@ -656,7 +946,6 @@
             const containerProfil = document.getElementById('profil-galeri-container');
             let galeriList = JSON.parse(localStorage.getItem('masjid_galeri_kegiatan') || '[]');
 
-            // Default arsip utama
             let htmlKegiatan = `
                 <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative">
                     <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-48 object-cover">
@@ -693,7 +982,6 @@
                         <div class="p-3 space-y-1">
                             <div class="flex justify-between items-center">
                                 <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">${item.type === 'video' ? 'Video Kegiatan' : 'Foto Kegiatan'}</span>
-                                ${isPengurus && containerKegiatan === eventTargetContainer ? `<button onclick="hapusGaleriItem(${actualIndex})" class="px-2 py-1 bg-rose-600 text-white rounded text-[10px] font-bold" title="Hapus"><i class="fa-solid fa-trash"></i> Hapus</button>` : ''}
                             </div>
                             <h4 class="text-xs font-bold text-slate-800">${item.judul}</h4>
                             <p class="text-[11px] text-slate-600 leading-relaxed">${item.deskripsi || 'Tidak ada deskripsi.'}</p>
@@ -703,7 +991,6 @@
                 `;
 
                 htmlKegiatan += itemHtml;
-                // Di profil kita tampilkan maksimal 3 kegiatan terbaru agar rapi
                 if (idx < 3) {
                     htmlProfil += itemHtml;
                 }
@@ -968,6 +1255,8 @@
             initMap();
             loadDataFromGoogleSheets();
             muatGaleriKegiatan();
+            muatInfoRekening();
+            muatAgendaKajian();
             document.getElementById('current-date-text').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) + " · KAB. LAMPUNG TIMUR";
         };
     </script>
