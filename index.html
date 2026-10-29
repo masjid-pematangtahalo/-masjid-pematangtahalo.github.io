@@ -263,11 +263,31 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- KOTAK GALERI KEGIATAN TERBARU DI HALAMAN PROFIL -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Dokumentasi & Kegiatan Terbaru</h4>
+                        <p class="text-xs text-slate-400">Menampilkan unggahan kegiatan masjid terbaru</p>
+                    </div>
+                    <button onclick="switchTab('kegiatan')" class="text-xs font-bold text-emerald-700 hover:underline">Lihat Semua →</button>
+                </div>
+                <div id="profil-galeri-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                        <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-40 object-cover">
+                        <div class="p-3">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Arsip Utama</span>
+                            <h4 class="text-xs font-bold text-slate-800 mt-1">Gedung Utama Masjid</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
 
         <!-- ========================================================================= -->
-        <!-- TAB 2: KEGIATAN & GALERI (UPLOAD FOTO/VIDEO & RUANG EDIT OPERATOR)        -->
+        <!-- TAB 2: KEGIATAN & GALERI (UPLOAD FOTO/VIDEO & DESKRIPSI LENGKAP)          -->
         <!-- ========================================================================= -->
         <section id="tab-kegiatan" class="hidden space-y-6">
             <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
@@ -278,17 +298,24 @@
                         <h3 class="font-bold text-slate-800 text-base">Galeri & Dokumentasi Kegiatan</h3>
                         <p class="text-xs text-slate-400">Dokumentasi foto dan video kegiatan ibadah serta sosial majelis</p>
                     </div>
+                </div>
 
-                    <!-- Panel Upload Khusus Operator/Pengurus -->
-                    <div id="panel-upload-kegiatan" class="hidden">
-                        <label class="cursor-pointer px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow transition">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Foto / Video
-                            <input type="file" accept="image/*,video/*" class="hidden" onchange="uploadMediaKegiatan(event)">
-                        </label>
+                <!-- FORM UPLOAD FOTO/VIDEO + DESKRIPSI (Hanya Muncul Jika Mode Pengurus Aktif) -->
+                <div id="panel-upload-kegiatan" class="hidden bg-emerald-50 p-5 rounded-3xl border border-emerald-200 space-y-3">
+                    <h4 class="text-xs font-bold text-emerald-900 uppercase"><i class="fa-solid fa-cloud-arrow-up mr-1"></i> Tambah Kegiatan & Dokumentasi Baru</h4>
+                    <div class="space-y-2">
+                        <input type="text" id="input-kegiatan-judul" placeholder="Judul / Nama Kegiatan..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs">
+                        <textarea id="input-kegiatan-desc" placeholder="Tulis deskripsi atau keterangan kegiatan di sini..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs" rows="2"></textarea>
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                            <input type="file" id="input-kegiatan-file" accept="image/*,video/*" class="text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-700 file:text-white hover:file:bg-emerald-800 cursor-pointer">
+                            <button onclick="simpanKegiatanBaru()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow transition">
+                                <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Kegiatan
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- RUANG CATATAN KEGIATAN (Hanya Operator yang Bisa Edit) -->
+                <!-- RUANG CATATAN PENGUMUMAN OPERATOR -->
                 <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
                     <div class="flex justify-between items-center">
                         <h4 class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
@@ -314,11 +341,12 @@
                 <!-- GRID CONTAINER FOTO & VIDEO KEGIATAN -->
                 <div id="galeri-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <!-- Foto Bawaan / Contoh Utama -->
-                    <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                    <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative">
                         <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-48 object-cover">
                         <div class="p-3">
                             <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Arsip Utama</span>
                             <h4 class="text-xs font-bold text-slate-800 mt-1">Gedung Utama Masjid Jami' Darussalam</h4>
+                            <p class="text-[11px] text-slate-500 mt-1">Dokumentasi resmi bangunan utama Masjid Jami' Darussalam Pematang Tahalo.</p>
                         </div>
                     </div>
                 </div>
@@ -523,10 +551,12 @@
             if (tab === 'profil') {
                 tabProfil.classList.remove('hidden');
                 btnProfil.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap";
+                muatGaleriKegiatan();
                 setTimeout(() => { if (window.map) window.map.invalidateSize(); }, 200);
             } else if (tab === 'kegiatan') {
                 tabKegiatan.classList.remove('hidden');
                 btnKegiatan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap";
+                muatGaleriKegiatan();
             } else if (tab === 'keuangan') {
                 tabKeuangan.classList.remove('hidden');
                 btnKeuangan.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow whitespace-nowrap";
@@ -561,7 +591,8 @@
                     document.getElementById('status-badge-box').textContent = "Aktif";
                     document.getElementById('form-sandi-container').innerHTML = `<button onclick="logoutPengurus()" class="w-full py-2 bg-rose-700 hover:bg-rose-800 text-white rounded-xl text-xs font-bold transition shadow">Keluar Sesi Pengurus</button>`;
                     
-                    // Render ulang tabel agar tombol aksi muncul di setiap baris
+                    // Render ulang galeri & tabel
+                    muatGaleriKegiatan();
                     hitungDanTampilkanData(globalMasterData);
                 }, 800);
             } else {
@@ -576,46 +607,118 @@
             location.reload();
         }
 
-        // Upload Media Foto/Video Khusus Pengurus
-        function uploadMediaKegiatan(event) {
+        // Simpan Kegiatan Baru (Foto/Video + Judul + Deskripsi) ke LocalStorage
+        function simpanKegiatanBaru() {
             if (!isPengurus) {
-                alert("Akses ditolak! Hanya operator/pengurus yang dapat mengunggah media.");
+                alert("Akses ditolak!");
                 return;
             }
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                const isVideo = file.type.startsWith('video/');
+            const judul = document.getElementById('input-kegiatan-judul').value.trim();
+            const desc = document.getElementById('input-kegiatan-desc').value.trim();
+            const fileInput = document.getElementById('input-kegiatan-file');
+            
+            if (!judul || fileInput.files.length === 0) {
+                alert("Mohon isi Judul Kegiatan dan pilih file Foto/Video terlebih dahulu!");
+                return;
+            }
 
-                reader.onload = function(e) {
-                    const container = document.getElementById('galeri-container');
-                    const div = document.createElement('div');
-                    div.className = "bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm";
-                    
-                    if (isVideo) {
-                        div.innerHTML = `
-                            <video controls class="w-full h-48 object-cover">
-                                <source src="${e.target.result}" type="${file.type}">
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            const isVideo = file.type.startsWith('video/');
+
+            reader.onload = function(e) {
+                const baseapData = e.target.result;
+                let galeriList = JSON.parse(localStorage.getItem('masjid_galeri_kegiatan') || '[]');
+                
+                galeriList.push({
+                    judul: judul,
+                    deskripsi: desc,
+                    media: baseapData,
+                    type: isVideo ? 'video' : 'image'
+                });
+
+                localStorage.setItem('masjid_galeri_kegiatan', JSON.stringify(galeriList));
+                
+                // Reset form
+                document.getElementById('input-kegiatan-judul').value = '';
+                document.getElementById('input-kegiatan-desc').value = '';
+                fileInput.value = '';
+
+                muatGaleriKegiatan();
+                alert("Kegiatan baru berhasil disimpan dan ditampilkan di Profil & Galeri!");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Muat & Render Galeri Kegiatan ke Halaman Profil dan Tab Kegiatan
+        function muatGaleriKegiatan() {
+            const containerKegiatan = document.getElementById('galeri-container');
+            const containerProfil = document.getElementById('profil-galeri-container');
+            let galeriList = JSON.parse(localStorage.getItem('masjid_galeri_kegiatan') || '[]');
+
+            // Default arsip utama
+            let htmlKegiatan = `
+                <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative">
+                    <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-48 object-cover">
+                    <div class="p-3">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Arsip Utama</span>
+                        <h4 class="text-xs font-bold text-slate-800 mt-1">Gedung Utama Masjid Jami' Darussalam</h4>
+                        <p class="text-[11px] text-slate-500 mt-1">Dokumentasi resmi bangunan utama Masjid Jami' Darussalam Pematang Tahalo.</p>
+                    </div>
+                </div>
+            `;
+
+            let htmlProfil = `
+                <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                    <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-40 object-cover">
+                    <div class="p-3">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Arsip Utama</span>
+                        <h4 class="text-xs font-bold text-slate-800 mt-1">Gedung Utama Masjid</h4>
+                    </div>
+                </div>
+            `;
+
+            galeriList.slice().reverse().forEach((item, idx) => {
+                const actualIndex = galeriList.length - 1 - idx;
+                
+                const itemHtml = `
+                    <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative">
+                        ${item.type === 'video' ? `
+                            <video controls class="w-full h-40 sm:h-48 object-cover">
+                                <source src="${item.media}">
                             </video>
-                            <div class="p-3">
-                                <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">Video Kegiatan</span>
-                                <h4 class="text-xs font-bold text-slate-800 mt-1">${file.name}</h4>
+                        ` : `
+                            <img src="${item.media}" alt="${item.judul}" class="w-full h-40 sm:h-48 object-cover">
+                        `}
+                        <div class="p-3 space-y-1">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">${item.type === 'video' ? 'Video Kegiatan' : 'Foto Kegiatan'}</span>
+                                ${isPengurus && containerKegiatan === eventTargetContainer ? `<button onclick="hapusGaleriItem(${actualIndex})" class="px-2 py-1 bg-rose-600 text-white rounded text-[10px] font-bold" title="Hapus"><i class="fa-solid fa-trash"></i> Hapus</button>` : ''}
                             </div>
-                        `;
-                    } else {
-                        div.innerHTML = `
-                            <img src="${e.target.result}" alt="Foto Kegiatan" class="w-full h-48 object-cover">
-                            <div class="p-3">
-                                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Foto Kegiatan</span>
-                                <h4 class="text-xs font-bold text-slate-800 mt-1">${file.name}</h4>
-                            </div>
-                        `;
-                    }
+                            <h4 class="text-xs font-bold text-slate-800">${item.judul}</h4>
+                            <p class="text-[11px] text-slate-600 leading-relaxed">${item.deskripsi || 'Tidak ada deskripsi.'}</p>
+                            ${isPengurus ? `<button onclick="hapusGaleriItem(${actualIndex})" class="mt-2 w-full py-1 bg-rose-600 text-white rounded text-[10px] font-bold"><i class="fa-solid fa-trash mr-1"></i> Hapus Dokumentasi</button>` : ''}
+                        </div>
+                    </div>
+                `;
 
-                    container.prepend(div);
-                    alert("Media berhasil diunggah!");
+                htmlKegiatan += itemHtml;
+                // Di profil kita tampilkan maksimal 3 kegiatan terbaru agar rapi
+                if (idx < 3) {
+                    htmlProfil += itemHtml;
                 }
-                reader.readAsDataURL(file);
+            });
+
+            if(containerKegiatan) containerKegiatan.innerHTML = htmlKegiatan;
+            if(containerProfil) containerProfil.innerHTML = htmlProfil;
+        }
+
+        function hapusGaleriItem(index) {
+            if (confirm("Yakin ingin menghapus dokumentasi kegiatan ini?")) {
+                let galeriList = JSON.parse(localStorage.getItem('masjid_galeri_kegiatan') || '[]');
+                galeriList.splice(index, 1);
+                localStorage.setItem('masjid_galeri_kegiatan', JSON.stringify(galeriList));
+                muatGaleriKegiatan();
             }
         }
 
@@ -736,7 +839,6 @@
         }
 
         function hitungDanTampilkanData(serverRiwayat) {
-            // Saring data server yang disembunyikan operator lewat tombol tong sampah
             const hiddenServerRows = JSON.parse(localStorage.getItem('masjid_hidden_server_rows') || '[]');
             let filteredServerRows = [];
             
@@ -747,7 +849,6 @@
                 }
             });
 
-            // Gabungkan data server aktif + data manual tambahan web
             const manualData = JSON.parse(localStorage.getItem('masjid_manual_transaksi') || '[]');
             let combinedRiwayat = [...filteredServerRows, ...manualData];
 
@@ -774,19 +875,15 @@
             const totalSemuaPemasukan = totalJumat + totalMasukLain;
             const kasAkhir = kasAwal + totalSemuaPemasukan - totalKeluar;
 
-            // Update Kartu Atas
             document.getElementById('card-kas-awal').textContent = toRupiah(kasAwal);
             document.getElementById('card-jumat').textContent = toRupiah(totalJumat);
             document.getElementById('card-pemasukan').textContent = toRupiah(totalSemuaPemasukan);
             document.getElementById('card-pengeluaran').textContent = toRupiah(totalKeluar);
 
-            // Update Kartu Kas Akhir Bawah
             document.getElementById('card-saldo-total').textContent = toRupiah(kasAkhir);
             document.getElementById('label-hari-ini').textContent = 'Per ' + new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-            // Update Isi Tabel Mutasi
             const tbody = document.getElementById('table-body');
-            
             let allRowsForTable = [];
             
             filteredServerRows.forEach(item => {
@@ -870,6 +967,7 @@
         window.onload = function() {
             initMap();
             loadDataFromGoogleSheets();
+            muatGaleriKegiatan();
             document.getElementById('current-date-text').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) + " · KAB. LAMPUNG TIMUR";
         };
     </script>
