@@ -30,6 +30,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        /* Sembunyikan scrollbar bawaan pada galeri geser namun tetap bisa digeser */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
@@ -342,7 +345,7 @@
 
 
         <!-- ========================================================================= -->
-        <!-- TAB 2: KEGIATAN & GALERI (UPLOAD FOTO/VIDEO & DESKRIPSI LENGKAP)          -->
+        <!-- TAB 2: KEGIATAN & GALERI (MULTIPLE UPLOAD & SCROLL HORIZONTAL)            -->
         <!-- ========================================================================= -->
         <section id="tab-kegiatan" class="hidden space-y-6">
             <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
@@ -355,18 +358,20 @@
                     </div>
                 </div>
 
-                <!-- FORM UPLOAD FOTO/VIDEO + DESKRIPSI (Hanya Muncul Jika Mode Pengurus Aktif) -->
+                <!-- FORM UPLOAD MULTIPLE FOTO/VIDEO + DESKRIPSI (Hanya Muncul Jika Mode Pengurus Aktif) -->
                 <div id="panel-upload-kegiatan" class="hidden bg-emerald-50 p-5 rounded-3xl border border-emerald-200 space-y-3">
-                    <h4 class="text-xs font-bold text-emerald-900 uppercase"><i class="fa-solid fa-cloud-arrow-up mr-1"></i> Tambah Kegiatan & Dokumentasi Baru</h4>
+                    <h4 class="text-xs font-bold text-emerald-900 uppercase"><i class="fa-solid fa-cloud-arrow-up mr-1"></i> Tambah Banyak Foto Sekaligus</h4>
                     <div class="space-y-2">
                         <input type="text" id="input-kegiatan-judul" placeholder="Judul / Nama Kegiatan..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs">
                         <textarea id="input-kegiatan-desc" placeholder="Tulis deskripsi atau keterangan kegiatan di sini..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs" rows="2"></textarea>
                         <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-                            <input type="file" id="input-kegiatan-file" accept="image/*,video/*" class="text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-700 file:text-white hover:file:bg-emerald-800 cursor-pointer">
+                            <!-- PERHATIKAN: Ditambahkan atribut 'multiple' agar bisa pilih banyak file sekaligus -->
+                            <input type="file" id="input-kegiatan-file" accept="image/*,video/*" multiple class="text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-700 file:text-white hover:file:bg-emerald-800 cursor-pointer">
                             <button onclick="simpanKegiatanBaru()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow transition">
                                 <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Kegiatan
                             </button>
                         </div>
+                        <p class="text-[11px] text-emerald-800 italic">* Anda dapat memilih lebih dari satu foto sekaligus pada galeri perangkat Anda.</p>
                     </div>
                 </div>
 
@@ -426,7 +431,11 @@
                 <div id="galeri-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <!-- Foto Bawaan / Contoh Utama -->
                     <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative">
-                        <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-48 object-cover">
+                        <div class="relative w-full h-48 overflow-x-auto flex no-scrollbar snap-x snap-mandatory">
+                            <div class="w-full h-48 flex-shrink-0 snap-center">
+                                <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-48 object-cover">
+                            </div>
+                        </div>
                         <div class="p-3">
                             <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Arsip Utama</span>
                             <h4 class="text-xs font-bold text-slate-800 mt-1">Gedung Utama Masjid Jami' Darussalam</h4>
@@ -898,7 +907,7 @@
             }
         }
 
-        // Simpan Kegiatan Baru (Foto/Video + Judul + Deskripsi) ke LocalStorage
+        // Simpan Banyak Foto/Video Sekaligus (Multiple Upload) ke LocalStorage
         function simpanKegiatanBaru() {
             if (!isPengurus) {
                 alert("Akses ditolak!");
@@ -909,38 +918,63 @@
             const fileInput = document.getElementById('input-kegiatan-file');
             
             if (!judul || fileInput.files.length === 0) {
-                alert("Mohon isi Judul Kegiatan dan pilih file Foto/Video terlebih dahulu!");
+                alert("Mohon isi Judul Kegiatan dan pilih minimal satu file Foto/Video!");
                 return;
             }
 
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            const isVideo = file.type.startsWith('video/');
+            const files = Array.from(fileInput.files);
+            let processedFiles = 0;
+            let mediaArray = [];
 
-            reader.onload = function(e) {
-                const baseapData = e.target.result;
-                let galeriList = JSON.parse(localStorage.getItem('masjid_galeri_kegiatan') || '[]');
-                
-                galeriList.push({
-                    judul: judul,
-                    deskripsi: desc,
-                    media: baseapData,
-                    type: isVideo ? 'video' : 'image'
-                });
+            files.forEach((file) => {
+                const reader = new FileReader();
+                const isVideo = file.type.startsWith('video/');
 
-                localStorage.setItem('masjid_galeri_kegiatan', JSON.stringify(galeriList));
-                
-                document.getElementById('input-kegiatan-judul').value = '';
-                document.getElementById('input-kegiatan-desc').value = '';
-                fileInput.value = '';
+                reader.onload = function(e) {
+                    mediaArray.push({
+                        url: e.target.result,
+                        type: isVideo ? 'video' : 'image'
+                    });
 
-                muatGaleriKegiatan();
-                alert("Kegiatan baru berhasil disimpan dan ditampilkan di Profil & Galeri!");
-            };
-            reader.readAsDataURL(file);
+                    processedFiles++;
+                    if (processedFiles === files.length) {
+                        // Setelah semua file selesai dibaca, simpan ke LocalStorage
+                        let galeriList = JSON.parse(localStorage.getItem('masjid_galeri_kegiatan') || '[]');
+                        
+                        galeriList.push({
+                            judul: judul,
+                            deskripsi: desc,
+                            mediaList: mediaArray // Menyimpan array beberapa foto/video
+                        });
+
+                        localStorage.setItem('masjid_galeri_kegiatan', JSON.stringify(galeriList));
+                        
+                        document.getElementById('input-kegiatan-judul').value = '';
+                        document.getElementById('input-kegiatan-desc').value = '';
+                        fileInput.value = '';
+
+                        muatGaleriKegiatan();
+                        alert("Alhamdulillah, " + files.length + " dokumentasi berhasil disimpan!");
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
         }
 
-        // Muat & Render Galeri Kegiatan ke Halaman Profil dan Tab Kegiatan
+        // Fungsi Tombol Navigasi Geser Kiri / Kanan pada Galeri Multi-Foto
+        function scrollGaleriCard(cardId, direction) {
+            const container = document.getElementById(cardId);
+            if (container) {
+                const scrollAmount = 260; // Ukuran lebar geser
+                if (direction === 'left') {
+                    container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                } else {
+                    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                }
+            }
+        }
+
+        // Muat & Render Galeri Kegiatan ke Halaman Profil dan Tab Kegiatan dengan Scroll Horizontal & Panah Navigasi
         function muatGaleriKegiatan() {
             const containerKegiatan = document.getElementById('galeri-container');
             const containerProfil = document.getElementById('profil-galeri-container');
@@ -948,7 +982,11 @@
 
             let htmlKegiatan = `
                 <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative">
-                    <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-48 object-cover">
+                    <div class="relative w-full h-48 overflow-x-auto flex no-scrollbar snap-x snap-mandatory">
+                        <div class="w-full h-48 flex-shrink-0 snap-center">
+                            <img src="favicon.jpg" alt="Foto Masjid" class="w-full h-48 object-cover">
+                        </div>
+                    </div>
                     <div class="p-3">
                         <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Arsip Utama</span>
                         <h4 class="text-xs font-bold text-slate-800 mt-1">Gedung Utama Masjid Jami' Darussalam</h4>
@@ -969,19 +1007,51 @@
 
             galeriList.slice().reverse().forEach((item, idx) => {
                 const actualIndex = galeriList.length - 1 - idx;
+                const scrollContainerId = `scroll-card-${actualIndex}`;
                 
+                // Mendukung format data lama (media tunggal) atau format baru (mediaList jamak)
+                let itemsToRender = [];
+                if (item.mediaList && Array.isArray(item.mediaList)) {
+                    itemsToRender = item.mediaList;
+                } else if (item.media) {
+                    itemsToRender = [{ url: item.media, type: item.type || 'image' }];
+                }
+
+                let mediaHtmlItems = itemsToRender.map(m => {
+                    if (m.type === 'video') {
+                        return `<div class="w-full h-48 flex-shrink-0 snap-center relative bg-black"><video controls class="w-full h-48 object-contain"><source src="${m.url}"></video></div>`;
+                    } else {
+                        return `<div class="w-full h-48 flex-shrink-0 snap-center relative"><img src="${m.url}" alt="${item.judul}" class="w-full h-48 object-cover"></div>`;
+                    }
+                }).join('');
+
+                const hasMultiple = itemsToRender.length > 1;
+
                 const itemHtml = `
-                    <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative">
-                        ${item.type === 'video' ? `
-                            <video controls class="w-full h-40 sm:h-48 object-cover">
-                                <source src="${item.media}">
-                            </video>
-                        ` : `
-                            <img src="${item.media}" alt="${item.judul}" class="w-full h-40 sm:h-48 object-cover">
-                        `}
+                    <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative group">
+                        <!-- Kotak Media dengan Geser Horizontal -->
+                        <div class="relative w-full h-48">
+                            <div id="${scrollContainerId}" class="w-full h-48 overflow-x-auto flex no-scrollbar snap-x snap-mandatory scroll-smooth">
+                                ${mediaHtmlItems}
+                            </div>
+                            
+                            <!-- Tombol Panah Petunjuk Geser Kiri / Kanan (Hanya muncul jika foto lebih dari 1) -->
+                            ${hasMultiple ? `
+                                <button onclick="scrollGaleriCard('${scrollContainerId}', 'left')" class="absolute left-1 top-1/2 -translate-y-1/2 w-7 h-7 bg-black/60 hover:bg-black text-white rounded-full flex items-center justify-center text-xs shadow transition z-10">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <button onclick="scrollGaleriCard('${scrollContainerId}', 'right')" class="absolute right-1 top-1/2 -translate-y-1/2 w-7 h-7 bg-black/60 hover:bg-black text-white rounded-full flex items-center justify-center text-xs shadow transition z-10">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                                <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[9px] font-bold px-2 py-0.5 rounded-full z-10 pointer-events-none">
+                                    <i class="fa-solid fa-images mr-1"></i> ${itemsToRender.length} Foto
+                                </span>
+                            ` : ''}
+                        </div>
+
                         <div class="p-3 space-y-1">
                             <div class="flex justify-between items-center">
-                                <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">${item.type === 'video' ? 'Video Kegiatan' : 'Foto Kegiatan'}</span>
+                                <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">Galeri Kegiatan</span>
                             </div>
                             <h4 class="text-xs font-bold text-slate-800">${item.judul}</h4>
                             <p class="text-[11px] text-slate-600 leading-relaxed">${item.deskripsi || 'Tidak ada deskripsi.'}</p>
