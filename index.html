@@ -15,60 +15,90 @@
     <meta property="og:type" content="website">
 
     <!-- SEO & Kata Kunci Pencarian Google -->
-    <title>Masjid Jami' DARUSSALAM Pematang Tahalo | Profil & Kas Masjid</title>
-    <meta name="description" content="Website Resmi Masjid Jami' / Jamik Darussalam Pematang Tahalo, Kecamatan Jabung, Kabupaten Lampung Timur. Informasi profil masjid, jadwal sholat, dan laporan kas transparan.">
-    <meta name="keywords" content="Masjid Jamik Darussalam, Masjid Jami Darussalam, Pematang Tahalo, Masjid Pematang Tahalo, Jabung Lampung Timur, Kas Masjid Darussalam">
+    <title>Masjid Jami' DARUSSALAM Pematang Tahalo | Profil, Kas, Zakat & Waris</title>
+    <meta name="description" content="Website Resmi Masjid Jami' / Jamik Darussalam Pematang Tahalo, Kecamatan Jabung, Kabupaten Lampung Timur. Informasi profil masjid, jadwal sholat, kas transparan, kalkulator zakat, dan kalkulator waris faraidh.">
+    <meta name="keywords" content="Masjid Jamik Darussalam, Masjid Jami Darussalam, Pematang Tahalo, Jabung Lampung Timur, Kas Masjid, Kalkulator Zakat, Kalkulator Waris">
     <meta name="robots" content="index, follow">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet Peta OpenStreetMap -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Pustaka untuk Ekspor PDF otomatis Kalkulator Zakat -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        /* Sembunyikan scrollbar bawaan pada galeri geser namun tetap bisa digeser */
+        .main-menu-item { display:flex; align-items:center; gap:14px; width:100%; padding:14px 18px; text-align:left; font-size:14px; font-weight:600; color:#263244; transition:background .15s; }
+        .main-menu-item:hover, .main-menu-item:focus-visible { background:#ecfdf5; outline:none; }
+        .main-menu-item i { width:20px; color:#059669; font-size:17px; text-align:center; }
+        /* Sembunyikan scrollbar bawaan pada galeri geser */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Styling Variabel Kalkulator Zakat */
+        :root {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --header-bg: #065f46;
+            --table-header: #f8fafc;
+            --input-bg: #ffffff;
+        }
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --header-bg: #064e3b;
+            --table-header: #0f172a;
+            --input-bg: #0f172a;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
 
     <!-- ================= HEADER RESMI MASJID ================= -->
     <header class="bg-emerald-800 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
+        <div class="max-w-6xl mx-auto px-4 py-2 flex flex-row justify-between items-center gap-2">
+            <div class="flex items-center space-x-3 min-w-0 flex-1">
                 <div class="flex items-center space-x-3">
                     <!-- LOGO FOTO MASJID -->
-                    <div class="w-10 h-10 rounded-full border-2 border-amber-300 overflow-hidden shadow flex-shrink-0 bg-emerald-900">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-amber-300 overflow-hidden shadow flex-shrink-0 bg-emerald-900">
                         <img src="favicon.jpg" alt="Logo Masjid Jami' Darussalam" class="w-full h-full object-cover">
                     </div>
-                    <div>
-                        <div class="flex items-center gap-1.5">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5 flex-wrap">
                             <span class="bg-amber-400 text-slate-900 text-[10px] uppercase font-black px-1.5 py-0.5 rounded shadow-sm">TERDAFTAR RESMI</span>
                             <h1 class="font-extrabold text-sm sm:text-base tracking-wide leading-tight">DARUSSALAM</h1>
                         </div>
-                        <p class="text-[11px] text-emerald-200">ID SIMAS: 01.4.08.07.03.000020 • Pematang Tahalo</p>
+                        <p class="text-[9px] sm:text-[11px] text-emerald-200 whitespace-nowrap">ID SIMAS: 01.4.08.07.03.000020 • Pematang Tahalo</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Navigasi Menu Tersusun (Profil & Kegiatan di atas, Kas di bawah) -->
-            <div class="flex flex-col gap-1 w-full sm:w-auto">
-                <div class="flex items-center gap-1">
-                    <button onclick="switchTab('profil')" id="tab-btn-profil" class="flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow text-center">
-                        <i class="fa-solid fa-circle-info mr-1"></i> Profil
-                    </button>
-                    <button onclick="switchTab('kegiatan')" id="tab-btn-kegiatan" class="flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white text-center">
-                        <i class="fa-solid fa-calendar-days mr-1"></i> Kegiatan
-                    </button>
-                </div>
-                <button onclick="switchTab('keuangan')" id="tab-btn-keuangan" class="w-full px-3 py-1 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white text-center bg-emerald-900/50 border border-emerald-700/50">
-                    <i class="fa-solid fa-wallet mr-1"></i> Kas (LIVE)
+            <!-- MENU UTAMA: navigasi dropdown -->
+            <div class="relative w-auto flex-shrink-0 flex justify-end">
+                <button type="button" id="main-menu-toggle" onclick="toggleMainMenu()"
+                    aria-expanded="false" aria-controls="main-menu-panel"
+                    class="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow transition whitespace-nowrap">
+                    <i class="fa-solid fa-bars-staggered text-amber-300"></i> MENU
+                    <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
                 </button>
+                <nav id="main-menu-panel" class="hidden absolute right-0 top-full mt-3 w-64 max-w-[calc(100vw-2rem)] bg-white text-slate-800 rounded-3xl shadow-xl border border-slate-200 overflow-hidden z-[100]">
+                    <button onclick="switchTab('profil')" class="main-menu-item"><i class="fa-solid fa-circle-info"></i><span>Profil Masjid</span></button>
+                    <button onclick="switchTab('kegiatan')" class="main-menu-item"><i class="fa-solid fa-calendar-days"></i><span>Kegiatan & Galeri</span></button>
+                    <button onclick="switchTab('keuangan')" class="main-menu-item"><i class="fa-solid fa-wallet"></i><span>Kas (LIVE)</span></button>
+                    <button onclick="switchTab('zakat')" class="main-menu-item"><i class="fa-solid fa-calculator"></i><span>Kalkulator Zakat</span></button>
+                    <button onclick="switchTab('waris')" class="main-menu-item border-t border-slate-100"><i class="fa-solid fa-scale-balanced"></i><span>Waris Faraidh</span></button>
+                </nav>
             </div>
         </div>
     </header>
@@ -76,9 +106,7 @@
     <!-- ================= KONTEN UTAMA ================= -->
     <main class="max-w-6xl w-full mx-auto px-4 py-6 flex-1 space-y-6">
 
-        <!-- ========================================================================= -->
-        <!-- TAB 1: PROFIL MASJID (DATA RESMI SIMAS KEMENAG RI)                        -->
-        <!-- ========================================================================= -->
+        <!-- TAB 1: PROFIL MASJID -->
         <section id="tab-profil" class="space-y-6">
             
             <!-- Breadcrumb Navigation -->
@@ -176,7 +204,7 @@
                 </div>
             </div>
 
-            <!-- REKENING & DONASI MASJID (BISA DIEDIT OPERATOR) -->
+            <!-- REKENING & DONASI MASJID -->
             <div class="bg-gradient-to-br from-emerald-900 to-slate-900 text-white rounded-3xl p-6 shadow-md space-y-4">
                 <div class="flex justify-between items-center border-b border-emerald-800 pb-3">
                     <div>
@@ -204,7 +232,7 @@
                 </div>
             </div>
 
-            <!-- MODAL EDIT REKENING (KHUSUS OPERATOR) -->
+            <!-- MODAL EDIT REKENING -->
             <div id="panel-edit-rekening" class="hidden bg-white p-5 rounded-3xl border-2 border-amber-400 shadow-sm space-y-3">
                 <div class="flex justify-between items-center">
                     <h4 class="text-xs font-bold text-slate-800 uppercase">Pengaturan Nomor Rekening & WhatsApp</h4>
@@ -278,7 +306,7 @@
 
             <!-- FASILITAS & KEGIATAN RUTIN -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Fasilitas (11 Sarana Ibadah) -->
+                <!-- Fasilitas -->
                 <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
                     <div class="flex items-center justify-between mb-4">
                         <div>
@@ -301,7 +329,7 @@
                     </div>
                 </div>
 
-                <!-- Kegiatan Rutin (7 Aktivitas) -->
+                <!-- Kegiatan Rutin -->
                 <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
                     <div class="flex items-center justify-between mb-4">
                         <div>
@@ -322,7 +350,7 @@
                 </div>
             </div>
 
-            <!-- KOTAK GALERI KEGIATAN TERBARU DI HALAMAN PROFIL -->
+            <!-- GALERI KEGIATAN TERBARU DI PROFIL -->
             <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
                 <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                     <div>
@@ -343,14 +371,10 @@
             </div>
         </section>
 
-
-        <!-- ========================================================================= -->
-        <!-- TAB 2: KEGIATAN & GALERI (MULTIPLE UPLOAD & SCROLL HORIZONTAL)            -->
-        <!-- ========================================================================= -->
+        <!-- TAB 2: KEGIATAN & GALERI -->
         <section id="tab-kegiatan" class="hidden space-y-6">
             <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
                 
-                <!-- HEADER SEKSI KEGIATAN -->
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
                     <div>
                         <h3 class="font-bold text-slate-800 text-base">Galeri & Dokumentasi Kegiatan</h3>
@@ -358,14 +382,13 @@
                     </div>
                 </div>
 
-                <!-- FORM UPLOAD MULTIPLE FOTO/VIDEO + DESKRIPSI (Hanya Muncul Jika Mode Pengurus Aktif) -->
+                <!-- FORM UPLOAD MULTIPLE FOTO/VIDEO -->
                 <div id="panel-upload-kegiatan" class="hidden bg-emerald-50 p-5 rounded-3xl border border-emerald-200 space-y-3">
                     <h4 class="text-xs font-bold text-emerald-900 uppercase"><i class="fa-solid fa-cloud-arrow-up mr-1"></i> Tambah Banyak Foto Sekaligus</h4>
                     <div class="space-y-2">
                         <input type="text" id="input-kegiatan-judul" placeholder="Judul / Nama Kegiatan..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs">
                         <textarea id="input-kegiatan-desc" placeholder="Tulis deskripsi atau keterangan kegiatan di sini..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs" rows="2"></textarea>
                         <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-                            <!-- PERHATIKAN: Ditambahkan atribut 'multiple' agar bisa pilih banyak file sekaligus -->
                             <input type="file" id="input-kegiatan-file" accept="image/*,video/*" multiple class="text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-700 file:text-white hover:file:bg-emerald-800 cursor-pointer">
                             <button onclick="simpanKegiatanBaru()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow transition">
                                 <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Kegiatan
@@ -375,7 +398,7 @@
                     </div>
                 </div>
 
-                <!-- AGENDA & KAJIAN RUTIN (BISA DIEDIT OPERATOR) -->
+                <!-- AGENDA & KAJIAN RUTIN -->
                 <div class="bg-emerald-50/70 p-5 rounded-3xl border border-emerald-200 space-y-4">
                     <div class="flex justify-between items-center border-b border-emerald-200 pb-2">
                         <h4 class="text-xs font-bold text-emerald-900 uppercase flex items-center gap-1.5">
@@ -392,7 +415,7 @@
                     </div>
                 </div>
 
-                <!-- MODAL EDIT AGENDA (KHUSUS OPERATOR) -->
+                <!-- MODAL EDIT AGENDA -->
                 <div id="panel-edit-agenda" class="hidden bg-white p-5 rounded-3xl border-2 border-amber-400 shadow-sm space-y-3">
                     <div class="flex justify-between items-center">
                         <h4 class="text-xs font-bold text-slate-800 uppercase">Ubah Daftar Agenda & Kajian</h4>
@@ -404,7 +427,7 @@
                     </button>
                 </div>
 
-                <!-- RUANG CATATAN PENGUMUMAN OPERATOR -->
+                <!-- RUANG CATATAN PENGUMUMAN -->
                 <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
                     <div class="flex justify-between items-center">
                         <h4 class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
@@ -413,12 +436,10 @@
                         <span id="badge-mode-edit-kegiatan" class="text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-bold">Hanya Baca</span>
                     </div>
 
-                    <!-- Tampilan Teks Pengumuman -->
                     <div id="text-pengumuman-kegiatan" class="text-xs text-slate-700 leading-relaxed font-medium p-2 bg-white rounded-xl border border-slate-100">
                         Selamat datang di halaman galeri dokumentasi Masjid Jami' Darussalam Pematang Tahalo.
                     </div>
 
-                    <!-- Form Edit Operator (Awalnya tersembunyi) -->
                     <div id="form-edit-kegiatan-operator" class="hidden space-y-2 pt-2">
                         <textarea id="input-catatan-kegiatan" class="w-full text-xs p-3 bg-white border border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 font-medium" rows="3" placeholder="Tulis pengumuman atau agenda baru di sini..."></textarea>
                         <button onclick="simpanCatatanKegiatan()" class="px-4 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl shadow transition">
@@ -429,7 +450,6 @@
 
                 <!-- GRID CONTAINER FOTO & VIDEO KEGIATAN -->
                 <div id="galeri-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    <!-- Foto Bawaan / Contoh Utama -->
                     <div class="bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative">
                         <div class="relative w-full h-48 overflow-x-auto flex no-scrollbar snap-x snap-mandatory">
                             <div class="w-full h-48 flex-shrink-0 snap-center">
@@ -447,13 +467,9 @@
             </div>
         </section>
 
-
-        <!-- ========================================================================= -->
-        <!-- TAB 3: MENU KEUANGAN KAS MASJID (LIVE GOOGLE SHEETS & MANUAL WEB EDIT)    -->
-        <!-- ========================================================================= -->
+        <!-- TAB 3: KEUANGAN KAS MASJID -->
         <section id="tab-keuangan" class="hidden space-y-6">
 
-            <!-- Banner Sinkronisasi -->
             <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-2">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold">
@@ -468,14 +484,13 @@
                     <button onclick="loadDataFromGoogleSheets()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
                         <i class="fa-solid fa-rotate" id="refresh-icon"></i> Perbarui
                     </button>
-                    <!-- Tombol Tambah Kas Manual Khusus Pengurus -->
                     <button id="btn-edit-kas" onclick="bukaModalTambahKas()" class="hidden px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
                         <i class="fa-solid fa-plus"></i> Tambah Transaksi Manual
                     </button>
                 </div>
             </div>
 
-            <!-- FORM TAMBAH/EDIT TRANSAKSI MANUAL (Hanya Muncul Jika Mode Pengurus Aktif) -->
+            <!-- FORM TAMBAH/EDIT TRANSAKSI MANUAL -->
             <div id="panel-form-manual" class="hidden bg-white p-5 rounded-3xl border-2 border-amber-400 shadow-sm space-y-3">
                 <div class="flex justify-between items-center">
                     <h4 class="text-xs font-bold text-slate-800 uppercase" id="form-title-manual">Tambah Transaksi Kas Baru</h4>
@@ -500,15 +515,11 @@
 
             <!-- 4 KARTU SALDO BAGIAN ATAS -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                
-                <!-- 1. KAS AWAL -->
                 <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-emerald-300 flex flex-col justify-between">
                     <span class="text-xs font-black text-emerald-800 uppercase tracking-wide">1. KAS AWAL</span>
                     <h3 id="card-kas-awal" class="text-xl font-black text-slate-800 mt-2">Memuat...</h3>
                     <p class="text-[11px] text-slate-400 mt-1">Saldo pembukuan awal</p>
                 </div>
-
-                <!-- 2. PENDAPATAN UANG JAMAAH JUMAT -->
                 <div class="bg-amber-50 p-4 rounded-2xl shadow-sm border border-amber-200 flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-black text-amber-900 uppercase tracking-wide">2. KOTAK JAMAAH JUMAT</span>
@@ -517,15 +528,11 @@
                     <h3 id="card-jumat" class="text-xl font-black text-amber-700 mt-2">Memuat...</h3>
                     <p class="text-[11px] text-amber-800 mt-1">Total infaq Sholat Jumat</p>
                 </div>
-
-                <!-- 3. TOTAL SEMUA PEMASUKAN -->
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-blue-100 flex flex-col justify-between">
                     <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">3. TOTAL PEMASUKAN</span>
                     <h3 id="card-pemasukan" class="text-xl font-bold text-blue-600 mt-2">Memuat...</h3>
                     <p class="text-[11px] text-slate-400 mt-1">Jumat + donasi/transfer lain</p>
                 </div>
-
-                <!-- 4. TOTAL PENGELUARAN -->
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-rose-100 flex flex-col justify-between">
                     <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">4. TOTAL PENGELUARAN</span>
                     <h3 id="card-pengeluaran" class="text-xl font-bold text-rose-600 mt-2">Memuat...</h3>
@@ -563,7 +570,7 @@
                 </div>
             </div>
 
-            <!-- KAS AKHIR / KAS HARI INI DI BAGIAN BAWAH -->
+            <!-- KAS AKHIR -->
             <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 rounded-3xl p-6 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 border-2 border-emerald-600">
                 <div>
                     <div class="flex items-center gap-2">
@@ -579,9 +586,408 @@
                 </div>
             </div>
         </section>
+
+        <!-- TAB 4: KALKULATOR ZAKAT MASJID -->
+        <section id="tab-zakat" class="hidden space-y-6">
+            <div id="areaCetak" class="space-y-6">
+                
+                <header class="header" style="background-color: var(--header-bg); color: white; padding: 18px; border-radius: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                    <div>
+                        <h2 style="font-size: 1.25rem; font-weight: 700;">Kalkulator Zakat Masjid</h2>
+                        <p style="font-size: 0.8rem; color: #a7f3d0; margin-top: 2px;">Distribusi 8 Asnaf (Dilengkapi Arsip & Dark Mode)</p>
+                    </div>
+                    <div class="header-btns no-print" style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button class="btn btn-theme" onclick="toggleTheme()" style="background: #334155; color: white; border: none; padding: 7px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer;">🌙 Mode</button>
+                        <button class="btn btn-guide" onclick="toggleGuide()" style="background: #0284c7; color: white; border: none; padding: 7px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer;">? Cara/panduan</button>
+                        <button class="btn btn-history" onclick="simpanArsip()" style="background: #7c3aed; color: white; border: none; padding: 7px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer;">💾 Simpan Arsip</button>
+                        <button class="btn btn-reset" onclick="resetDefault()" style="background: rgba(0,0,0,0.25); color: #a7f3d0; border: none; padding: 7px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer;">Reset</button>
+                        <button class="btn btn-csv" onclick="exportCSV()" style="background: #047857; color: white; border: none; padding: 7px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer;">Ekspor CSV</button>
+                        <button class="btn btn-pdf" onclick="downloadPDF()" style="background: #dc2626; color: white; border: none; padding: 7px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">⬇ Unduh PDF</button>
+                        <button class="btn btn-print" onclick="cetakHalaman()" style="background: #f59e0b; color: #022c22; border: none; padding: 7px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">🖨 Cetak</button>
+                    </div>
+                </header>
+
+                <div id="guideModal" class="guide-modal no-print" style="display: none; background-color: #e0f2fe; border-left: 4px solid #0284c7; padding: 14px; border-radius: 10px; font-size: 0.8rem; color: #0369a1;">
+                    <h4 style="font-weight: 700; margin-bottom: 6px; color: #03486f;">Panduan Lengkap Penggunaan Aplikasi Zakat:</h4>
+                    <ol style="padding-left: 18px; display: flex; flex-direction: column; gap: 4px;">
+                        <li><strong>Total Zakat:</strong> Masukkan total perolehan Zakat Beras dan Zakat Mal/Uang.</li>
+                        <li><strong>Kalkulator Fitrah Perorangan:</strong> Gunakan kotak tambahan untuk menghitung konversi zakat fitrah per jiwa jika diperlukan.</li>
+                        <li><strong>Atur Jiwa & Bobot:</strong> Ketik jumlah mustahiq dan ubah bobot manual sesuai hasil musyawarah panitia.</li>
+                        <li><strong>Sembunyikan/Hapus Asnaf:</strong> Klik tombol [X] di tabel untuk menyembunyikan Asnaf yang tidak digunakan.</li>
+                        <li><strong>Arsip & Ekspor:</strong> Klik <em>Simpan Arsip</em> untuk mencatat riwayat tahun ini, atau unduh laporan dalam bentuk PDF/CSV.</li>
+                    </ol>
+                </div>
+
+                <div class="quote-box no-print" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 10px; font-size: 0.8rem; color: #78350f;">
+                    <strong>Kaidah Distribusi:</strong> Zakat dibagi <em>per kepala/jiwa</em> secara proporsional hasil musyawarah, agar mustahiq terbantu merata dan adil.
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="card" style="background: var(--card-bg); padding: 14px; border-radius: 14px; border: 1px solid var(--border-color);">
+                        <label class="card-label" style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; display: block;">Total Zakat Beras</label>
+                        <div class="input-wrap" style="position: relative;">
+                            <input type="number" id="totalBeras" value="1000" oninput="simpanHitung()" style="width: 100%; border: 1px solid var(--border-color); background: var(--input-bg); border-radius: 10px; padding: 10px; font-size: 1.15rem; font-weight: 700; color: var(--text-color); outline: none;">
+                            <span style="position: absolute; right: 12px; top: 12px; font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Kg</span>
+                        </div>
+                    </div>
+
+                    <div class="card" style="background: var(--card-bg); padding: 14px; border-radius: 14px; border: 1px solid var(--border-color);">
+                        <label class="card-label" style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; display: block;">Total Zakat Mal / Uang</label>
+                        <div class="input-wrap" style="position: relative;">
+                            <input type="number" id="totalUang" value="20000000" oninput="simpanHitung()" style="width: 100%; border: 1px solid var(--border-color); background: var(--input-bg); border-radius: 10px; padding: 10px; font-size: 1.15rem; font-weight: 700; color: var(--text-color); outline: none;">
+                            <span style="position: absolute; right: 12px; top: 12px; font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Rp</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card no-print" style="background: var(--card-bg); padding: 14px; border-radius: 14px; border: 1px solid var(--border-color);">
+                    <label class="card-label" style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; display: block;">Simulasi Zakat Fitrah Perorangan (Opsional)</label>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 0.8rem;">
+                        <span>Harga Beras/Kg: <input type="number" id="hargaBeras" value="13000" oninput="hitungFitrahIndividu()" style="width: 90px; padding: 4px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);"></span>
+                        <span>Takaran (Kg/Jiwa): <input type="number" id="takaranBeras" value="2.5" step="0.5" oninput="hitungFitrahIndividu()" style="width: 60px; padding: 4px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color);"></span>
+                        <strong id="hasilFitrahUang" style="color: #047857; margin-left: auto;">Nilai Uang/Jiwa: Rp 32.500</strong>
+                    </div>
+                </div>
+
+                <div class="table-container" style="background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border-color); overflow: hidden;">
+                    <div class="table-header" style="padding: 12px 16px; background: var(--table-header); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="font-size: 0.95rem; font-weight: 700;">Daftar Asnaf & Jumlah Mustahiq</h3>
+                        <span class="badge" style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">Total: <span id="totalJiwaBadge">0</span> Jiwa</span>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.82rem; min-width: 680px;">
+                            <thead>
+                                <tr style="background: var(--table-header); color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; font-weight: 700;">
+                                    <th style="width: 35px; text-align: center; padding: 10px 12px;">No</th>
+                                    <th style="padding: 10px 12px;">Golongan Asnaf</th>
+                                    <th style="width: 90px; padding: 10px 12px;">Jiwa (Org)</th>
+                                    <th style="text-align: center; width: 75px; padding: 10px 12px;">Bobot</th>
+                                    <th style="text-align: right; padding: 10px 12px;">Beras / Orang</th>
+                                    <th style="text-align: right; padding: 10px 12px;">Uang / Orang</th>
+                                    <th style="text-align: right; background: rgba(16, 185, 129, 0.05); padding: 10px 12px;">Total Uang</th>
+                                    <th style="text-align: center; width: 50px;" class="no-print">Sembunyi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelBody">
+                            </tbody>
+                            <tfoot>
+                                <tr style="background: var(--table-header); font-weight: 800; border-top: 2px solid var(--border-color); color: var(--text-color);">
+                                    <td colspan="2" style="text-align: right; padding: 10px 12px;">TOTAL:</td>
+                                    <td id="footJiwa" style="color: #047857; padding: 10px 12px;">0 Jiwa</td>
+                                    <td style="text-align: center; padding: 10px 12px;">-</td>
+                                    <td id="footBeras" style="text-align: right; color: #047857; padding: 10px 12px;">0 Kg</td>
+                                    <td style="text-align: right; color: var(--text-muted); padding: 10px 12px;">-</td>
+                                    <td id="footUang" style="text-align: right; color: #047857; padding: 10px 12px;">Rp 0</td>
+                                    <td class="no-print"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="removed-box no-print" style="background: var(--card-bg); padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); font-size: 0.8rem;">
+                    <strong>📌 Golongan Asnaf Non-Aktif (Dihapus dari Tabel):</strong>
+                    <div id="containerRemoved" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px;"></div>
+                </div>
+
+                <div class="history-box no-print" style="background: var(--card-bg); padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); font-size: 0.8rem;">
+                    <strong>📁 Riwayat Arsip Perhitungan Zakat:</strong>
+                    <div id="containerArsip" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; max-height: 180px; overflow-y: auto;"></div>
+                </div>
+
+                <div class="sign-box" style="background: var(--card-bg); padding: 20px; border-radius: 14px; border: 1px solid var(--border-color);">
+                    <h3 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Berita Acara & Pengesahan Musyawarah</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted);">Distribusi ini dimusyawarahkan dan disahkan oleh pengurus bersama tokoh agama setempat.</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 20px; text-align: center; font-size: 0.75rem;">
+                        <div>
+                            <p style="margin-bottom: 40px; color: var(--text-muted); font-weight: 600;">Ketua Panitia / Amil</p>
+                            <span style="border-top: 1px solid var(--border-color); padding-top: 4px; font-weight: 700; display: inline-block; width: 90%; margin-bottom: 6px;">( ......................... )</span>
+                            <input type="text" id="namaKetua" value="Nama Ketua" oninput="simpanHitung()" style="width: 90%; border: 1px dashed var(--border-color); border-radius: 6px; padding: 4px; text-align: center; font-weight: 700; color: var(--text-color); font-size: 0.75rem; background: var(--input-bg); margin: 0 auto; display: block;" placeholder="Ketik nama...">
+                        </div>
+                        <div>
+                            <p style="margin-bottom: 40px; color: var(--text-muted); font-weight: 600;">Alim Ulama / Tokoh</p>
+                            <span style="border-top: 1px solid var(--border-color); padding-top: 4px; font-weight: 700; display: inline-block; width: 90%; margin-bottom: 6px;">( ......................... )</span>
+                            <input type="text" id="namaUlama" value="Nama Tokoh" oninput="simpanHitung()" style="width: 90%; border: 1px dashed var(--border-color); border-radius: 6px; padding: 4px; text-align: center; font-weight: 700; color: var(--text-color); font-size: 0.75rem; background: var(--input-bg); margin: 0 auto; display: block;" placeholder="Ketik nama...">
+                        </div>
+                        <div>
+                            <p style="margin-bottom: 40px; color: var(--text-muted); font-weight: 600;">Saksi Lingkungan</p>
+                            <span style="border-top: 1px solid var(--border-color); padding-top: 4px; font-weight: 700; display: inline-block; width: 90%; margin-bottom: 6px;">( ......................... )</span>
+                            <input type="text" id="namaSaksi" value="Nama Saksi" oninput="simpanHitung()" style="width: 90%; border: 1px dashed var(--border-color); border-radius: 6px; padding: 4px; text-align: center; font-weight: 700; color: var(--text-color); font-size: 0.75rem; background: var(--input-bg); margin: 0 auto; display: block;" placeholder="Ketik nama...">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 5: KALKULATOR WARIS FARAIDH -->
+        <section id="tab-waris" class="hidden space-y-6">
+            <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-600 text-white rounded-3xl p-5 shadow-md border border-emerald-600/30">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-white/10 rounded-xl ring-1 ring-white/20"><i data-lucide="scale" class="w-6 h-6 text-emerald-200"></i></div>
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-extrabold tracking-tight">Kalkulator Faraidh Lengkap</h2>
+                        <p class="text-xs text-emerald-100">Kaidah 25 Ahli Waris Syar'i (Furudh, 'Asabah, Hajb, 'Aul & Radd)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                <!-- SISI KIRI: INPUT FORM -->
+                <div class="lg:col-span-6 space-y-4">
+
+                    <!-- 1. Harta & Potongan -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+                        <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-3">
+                            <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i>
+                            1. Harta Warisan & Pengurang Syar'i
+                        </h2>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Total Nilai Harta Bruto (Tirkah)</label>
+                                <input type="text" id="inputHarta" placeholder="Rp 0" class="currency-input w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 font-semibold text-sm outline-none">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Hutang & Tajhiz (Biaya Jenazah)</label>
+                                    <input type="text" id="inputHutang" placeholder="0" class="currency-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 text-xs outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Wasiat (Maks 1/3 Sisa)</label>
+                                    <input type="text" id="inputWasiat" placeholder="0" class="currency-input w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 text-xs outline-none">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Data Pewaris & Pasangan -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+                        <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-3">
+                            <i data-lucide="user" class="w-4 h-4 text-emerald-600"></i>
+                            2. Jenazah & Pasangan yang Ditinggalkan
+                        </h2>
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="genderPewaris" value="male" checked class="peer sr-only">
+                                <div class="p-2.5 text-center border-2 border-slate-200 rounded-xl peer-checked:border-emerald-600 peer-checked:bg-emerald-50/50 transition">
+                                    <span class="block font-bold text-xs text-slate-800">Almarhum (Laki-laki)</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="genderPewaris" value="female" class="peer sr-only">
+                                <div class="p-2.5 text-center border-2 border-slate-200 rounded-xl peer-checked:border-emerald-600 peer-checked:bg-emerald-50/50 transition">
+                                    <span class="block font-bold text-xs text-slate-800">Almarhumah (Perempuan)</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <span class="text-xs font-semibold text-slate-700" id="labelPasangan">Istri yang Ditinggalkan</span>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="inputPasangan" min="0" max="4" value="1" class="w-16 px-2 py-1 text-center font-bold text-sm bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <span class="text-xs text-slate-500">orang</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Ahli Waris Furu' -->
+                    <details class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 group" open>
+                        <summary class="cursor-pointer flex items-center justify-between font-bold text-sm text-slate-900">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="baby" class="w-4 h-4 text-emerald-600"></i>
+                                Keturunan (Furu')
+                            </span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-slate-100">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Anak Laki-laki</label>
+                                <input type="number" id="inputAnakLaki" min="0" value="0" class="w-full px-2.5 py-1.5 text-xs font-bold border border-slate-200 rounded-lg outline-none focus:ring-1 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Anak Perempuan</label>
+                                <input type="number" id="inputAnakPerempuan" min="0" value="0" class="w-full px-2.5 py-1.5 text-xs font-bold border border-slate-200 rounded-lg outline-none focus:ring-1 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cucu Laki (dari Anak Laki)</label>
+                                <input type="number" id="inputCucuLaki" min="0" value="0" class="w-full px-2.5 py-1.5 text-xs font-bold border border-slate-200 rounded-lg outline-none focus:ring-1 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Cucu Pr (dari Anak Laki)</label>
+                                <input type="number" id="inputCucuPerempuan" min="0" value="0" class="w-full px-2.5 py-1.5 text-xs font-bold border border-slate-200 rounded-lg outline-none focus:ring-1 focus:ring-emerald-500">
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 4. Ahli Waris Ushul -->
+                    <details class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 group" open>
+                        <summary class="cursor-pointer flex items-center justify-between font-bold text-sm text-slate-900">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="shield" class="w-4 h-4 text-emerald-600"></i>
+                                Orang Tua & Leluhur (Ushul)
+                            </span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-100 text-xs">
+                            <label class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer">
+                                <input type="checkbox" id="ayahHidup" class="w-4 h-4 text-emerald-600 rounded">
+                                <span class="font-medium text-slate-700">Ayah Kandung</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer">
+                                <input type="checkbox" id="ibuHidup" class="w-4 h-4 text-emerald-600 rounded">
+                                <span class="font-medium text-slate-700">Ibu Kandung</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer">
+                                <input type="checkbox" id="kakekHidup" class="w-4 h-4 text-emerald-600 rounded">
+                                <span class="font-medium text-slate-700">Kakek (Ayah dari Ayah)</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer">
+                                <input type="checkbox" id="nenekIbuHidup" class="w-4 h-4 text-emerald-600 rounded">
+                                <span class="font-medium text-slate-700">Nenek (Ibu dari Ibu)</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer col-span-2">
+                                <input type="checkbox" id="nenekAyahHidup" class="w-4 h-4 text-emerald-600 rounded">
+                                <span class="font-medium text-slate-700">Nenek (Ibu dari Ayah)</span>
+                            </label>
+                        </div>
+                    </details>
+
+                    <!-- 5. Saudara / Saudari -->
+                    <details class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 group">
+                        <summary class="cursor-pointer flex items-center justify-between font-bold text-sm text-slate-900">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i>
+                                Saudara & Saudari (Hawasyi Dekat)
+                            </span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-slate-100 text-xs">
+                            <div>
+                                <label class="block text-slate-600 mb-1">Sdr Laki-laki Kandung</label>
+                                <input type="number" id="inputSdrKandungLaki" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-slate-600 mb-1">Sdri Perempuan Kandung</label>
+                                <input type="number" id="inputSdriKandungPr" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-slate-600 mb-1">Sdr Laki-laki Seayah</label>
+                                <input type="number" id="inputSdrSeayahLaki" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-slate-600 mb-1">Sdri Perempuan Seayah</label>
+                                <input type="number" id="inputSdriSeayahPr" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-slate-600 mb-1">Saudara/i Seibu (Laki-laki atau Perempuan)</label>
+                                <input type="number" id="inputSdrSeibu" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                                <span class="text-[10px] text-slate-400">Porsi laki-laki dan perempuan seibu sama rata (Al-Qur'an 4:12)</span>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 6. Kerabat Jauh -->
+                    <details class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 group">
+                        <summary class="cursor-pointer flex items-center justify-between font-bold text-sm text-slate-900">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="git-branch" class="w-4 h-4 text-emerald-600"></i>
+                                Paman, Keponakan & Sepupu ('Asabah Ba'id)
+                            </span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-slate-100 text-xs">
+                            <div>
+                                <label class="block text-slate-600 mb-1">Keponakan Lk (Anak Sdr Kandung Lk)</label>
+                                <input type="number" id="inputKeponakanKandung" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-slate-600 mb-1">Keponakan Lk (Anak Sdr Seayah Lk)</label>
+                                <input type="number" id="inputKeponakanSeayah" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-slate-600 mb-1">Paman Kandung (Saudara Kandung Ayah)</label>
+                                <input type="number" id="inputPamanKandung" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-slate-600 mb-1">Paman Seayah (Saudara Seayah Ayah)</label>
+                                <input type="number" id="inputPamanSeayah" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-slate-600 mb-1">Sepupu Lk (Anak Paman Kandung)</label>
+                                <input type="number" id="inputSepupuKandung" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-slate-600 mb-1">Sepupu Lk (Anak Paman Seayah)</label>
+                                <input type="number" id="inputSepupuSeayah" min="0" value="0" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                        </div>
+                    </details>
+
+                    <button id="btnHitung" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-bold rounded-2xl shadow-xl shadow-emerald-700/20 transition flex items-center justify-center gap-2 text-sm">
+                        <i data-lucide="calculator" class="w-5 h-5"></i>
+                        Hitung Faraidh Syar'i Sekarang
+                    </button>
+                </div>
+
+                <!-- SISI KANAN: HASIL DETAIL -->
+                <div class="lg:col-span-6 space-y-4">
+                    
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Harta Bersih Warisan (Tirkah)</span>
+                                <div id="displayHartaBersih" class="text-2xl font-extrabold text-emerald-600">Rp 0</div>
+                            </div>
+                            <div class="text-right">
+                                <span id="displayStatusKasus" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 text-slate-600">Normal</span>
+                                <div id="displayPotongan" class="text-[11px] text-slate-400 mt-1">Potongan: Rp 0</div>
+                            </div>
+                        </div>
+
+                        <!-- List Ahli Waris yang Berhak -->
+                        <div class="mt-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">Ahli Waris yang Berhak Menerima</h3>
+                                <span id="displayCountPenerima" class="text-xs font-semibold text-emerald-600">0 Pihak</span>
+                            </div>
+                            <div id="containerHasil" class="space-y-2.5">
+                                <div class="p-8 text-center text-slate-400 border-2 border-dashed border-slate-200 rounded-xl text-xs">
+                                    <i data-lucide="scroll" class="w-8 h-8 mx-auto mb-2 opacity-40"></i>
+                                    Silakan tentukan harta dan centang ahli waris di sebelah kiri, lalu klik <b>Hitung Faraidh</b>.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ahli Waris yang Terhalang -->
+                        <div class="mt-6 pt-4 border-t border-slate-100" id="sectionMahjub" style="display: none;">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-rose-500 mb-2 flex items-center gap-1.5">
+                                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+                                Ahli Waris Terhalang (Mahjub Hirman)
+                            </h4>
+                            <div id="containerMahjub" class="space-y-1.5"></div>
+                        </div>
+                    </div>
+
+                    <!-- Box Kaidah Fiqh -->
+                    <div class="bg-slate-900 text-slate-300 rounded-2xl p-5 text-xs space-y-2.5">
+                        <p class="font-bold text-white flex items-center gap-1.5">
+                            <i data-lucide="book-open" class="w-4 h-4 text-emerald-400"></i> Ketetapan Kaidah Syariat:
+                        </p>
+                        <p class="leading-relaxed">
+                            • <b>Ashabul Furudh:</b> Ahli waris dengan kadar bagian pasti dalam Al-Qur'an (1/2, 1/4, 1/8, 2/3, 1/3, 1/6).<br>
+                            • <b>'Asabah:</b> Ahli waris yang mengambil seluruh sisa harta setelah Ashabul Furudh menerima haknya.<br>
+                            • <b>Hajb Hirman:</b> Gugurnya hak waris seseorang karena terhalang oleh kerabat yang derajatnya lebih dekat.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
     </main>
 
-    <!-- KOTAK ASPIRASI & SARAN (TERSIMPAN DI WEB) -->
+    <!-- KOTAK ASPIRASI & SARAN -->
     <section class="max-w-6xl w-full mx-auto px-4 mt-6">
         <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -594,7 +1000,6 @@
                         <p class="text-xs text-slate-400">Sampaikan saran, masukan, atau pertanyaan Anda untuk pengurus masjid</p>
                     </div>
                 </div>
-                <!-- Tombol Kotak Masuk Khusus Pengurus -->
                 <button id="btn-inbox-toggle" onclick="bukaModalInbox()" class="hidden text-xs bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-3 py-2 rounded-xl shadow flex items-center gap-1.5">
                     <i class="fa-solid fa-inbox"></i> Kotak Masuk (<span id="inbox-count">0</span>)
                 </button>
@@ -617,7 +1022,7 @@
         </div>
     </section>
 
-    <!-- MODAL KOTAK MASUK / INBOX (KHUSUS PENGURUS) -->
+    <!-- MODAL KOTAK MASUK / INBOX -->
     <div id="modal-inbox" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center border-b pb-3">
@@ -635,7 +1040,7 @@
         </div>
     </div>
 
-    <!-- ================= KOTAK LOGIN PENGURUS (PRIVAT TANPA PANDUAN) ================= -->
+    <!-- KOTAK LOGIN PENGURUS -->
     <section class="max-w-6xl w-full mx-auto px-4 mt-6">
         <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm" id="box-login-area">
             <div class="flex items-center justify-between mb-3">
@@ -658,7 +1063,7 @@
         </div>
     </section>
 
-    <!-- ================= FOOTER RESMI & AMAN ================= -->
+    <!-- FOOTER RESMI -->
     <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
         <div class="max-w-6xl mx-auto px-4 text-center space-y-2">
             <p class="font-bold text-slate-200 text-sm tracking-wide">MASJID JAMI' DARUSSALAM PEMATANG TAHALO</p>
@@ -672,49 +1077,45 @@
     </footer>
 
     <script>
-        // URL Web App Google Apps Script terbaru Anda yang sudah disinkronkan
         const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7Bs_AmBS0sFMdlu400LIhdyBiRoCxw9lJo60ohKM2kvxMK-sqlLkD6tsSBSAWB3jd/exec";
         let isPengurus = false;
         let globalMasterData = [];
 
         // Tab Navigation
+        function toggleMainMenu(force) {
+            const panel = document.getElementById('main-menu-panel');
+            const button = document.getElementById('main-menu-toggle');
+            const open = typeof force === 'boolean' ? force : panel.classList.contains('hidden');
+            panel.classList.toggle('hidden', !open);
+            button.setAttribute('aria-expanded', String(open));
+        }
+
+        document.addEventListener('click', function(event) {
+            const panel = document.getElementById('main-menu-panel');
+            const button = document.getElementById('main-menu-toggle');
+            if (panel && !panel.contains(event.target) && !button.contains(event.target)) toggleMainMenu(false);
+        });
+
         function switchTab(tab) {
-            const tabProfil = document.getElementById('tab-profil');
-            const tabKegiatan = document.getElementById('tab-kegiatan');
-            const tabKeuangan = document.getElementById('tab-keuangan');
-            
-            const btnProfil = document.getElementById('tab-btn-profil');
-            const btnKegiatan = document.getElementById('tab-btn-kegiatan');
-            const btnKeuangan = document.getElementById('tab-btn-keuangan');
-
-            tabProfil.classList.add('hidden');
-            tabKegiatan.classList.add('hidden');
-            tabKeuangan.classList.add('hidden');
-
-            const defaultBtnClass = "flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white text-center";
-            const defaultKasClass = "w-full px-3 py-1 rounded-lg text-xs font-bold transition text-emerald-200 hover:text-white text-center bg-emerald-900/50 border border-emerald-700/50";
-            
-            btnProfil.className = defaultBtnClass;
-            btnKegiatan.className = defaultBtnClass;
-            btnKeuangan.className = defaultKasClass;
-
+            ['profil', 'kegiatan', 'keuangan', 'zakat', 'waris'].forEach(name => {
+                const section = document.getElementById('tab-' + name);
+                if (section) section.classList.toggle('hidden', name !== tab);
+            });
+            toggleMainMenu(false);
             if (tab === 'profil') {
-                tabProfil.classList.remove('hidden');
-                btnProfil.className = "flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow text-center";
                 muatGaleriKegiatan();
                 setTimeout(() => { if (window.map) window.map.invalidateSize(); }, 200);
             } else if (tab === 'kegiatan') {
-                tabKegiatan.classList.remove('hidden');
-                btnKegiatan.className = "flex-1 sm:flex-none px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow text-center";
                 muatGaleriKegiatan();
             } else if (tab === 'keuangan') {
-                tabKeuangan.classList.remove('hidden');
-                btnKeuangan.className = "w-full px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow text-center border border-emerald-500";
                 loadDataFromGoogleSheets();
+            } else if (tab === 'waris' && window.lucide) {
+                lucide.createIcons();
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // System Login Operator / Pengurus (Sandi: DARUSSALAMKU)
+        // System Login Operator / Pengurus
         function cekLoginPengurus() {
             const sandi = document.getElementById('input-sandi').value.trim();
             const info = document.getElementById('info-login');
@@ -758,7 +1159,7 @@
             location.reload();
         }
 
-        // Simpan Aspirasi ke Web (LocalStorage)
+        // Kotak Aspirasi & Saran
         function kirimAspirasiWeb() {
             const nama = document.getElementById('input-aspirasi-nama').value.trim();
             const kategori = document.getElementById('input-aspirasi-kategori').value;
@@ -778,10 +1179,8 @@
             });
 
             localStorage.setItem('masjid_inbox_aspirasi', JSON.stringify(inboxList));
-            
             document.getElementById('input-aspirasi-nama').value = '';
             document.getElementById('input-aspirasi-pesan').value = '';
-            
             alert("Alhamdulillah, saran atau aspirasi Anda berhasil dikirim dan tersimpan di sistem pengurus masjid.");
             if(isPengurus) updateInboxCount();
         }
@@ -835,7 +1234,7 @@
             }
         }
 
-        // Manajemen Info Rekening & WhatsApp via LocalStorage
+        // Info Rekening & Agenda
         function muatInfoRekening() {
             const rekData = JSON.parse(localStorage.getItem('masjid_info_rekening') || 'null');
             if (rekData) {
@@ -874,7 +1273,6 @@
             alert("Informasi rekening dan WhatsApp berhasil diperbarui!");
         }
 
-        // Manajemen Agenda & Kajian Rutin via LocalStorage
         function muatAgendaKajian() {
             const agendaText = localStorage.getItem('masjid_agenda_kajian');
             if (agendaText) {
@@ -907,7 +1305,7 @@
             }
         }
 
-        // Simpan Banyak Foto/Video Sekaligus (Multiple Upload) ke LocalStorage
+        // Multiple Upload Galeri
         function simpanKegiatanBaru() {
             if (!isPengurus) {
                 alert("Akses ditolak!");
@@ -938,15 +1336,8 @@
 
                     processedFiles++;
                     if (processedFiles === files.length) {
-                        // Setelah semua file selesai dibaca, simpan ke LocalStorage
                         let galeriList = JSON.parse(localStorage.getItem('masjid_galeri_kegiatan') || '[]');
-                        
-                        galeriList.push({
-                            judul: judul,
-                            deskripsi: desc,
-                            mediaList: mediaArray // Menyimpan array beberapa foto/video
-                        });
-
+                        galeriList.push({ judul: judul, deskripsi: desc, mediaList: mediaArray });
                         localStorage.setItem('masjid_galeri_kegiatan', JSON.stringify(galeriList));
                         
                         document.getElementById('input-kegiatan-judul').value = '';
@@ -961,11 +1352,10 @@
             });
         }
 
-        // Fungsi Tombol Navigasi Geser Kiri / Kanan pada Galeri Multi-Foto
         function scrollGaleriCard(cardId, direction) {
             const container = document.getElementById(cardId);
             if (container) {
-                const scrollAmount = 260; // Ukuran lebar geser
+                const scrollAmount = 260;
                 if (direction === 'left') {
                     container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
                 } else {
@@ -974,7 +1364,6 @@
             }
         }
 
-        // Muat & Render Galeri Kegiatan ke Halaman Profil dan Tab Kegiatan dengan Scroll Horizontal & Panah Navigasi
         function muatGaleriKegiatan() {
             const containerKegiatan = document.getElementById('galeri-container');
             const containerProfil = document.getElementById('profil-galeri-container');
@@ -1009,7 +1398,6 @@
                 const actualIndex = galeriList.length - 1 - idx;
                 const scrollContainerId = `scroll-card-${actualIndex}`;
                 
-                // Mendukung format data lama (media tunggal) atau format baru (mediaList jamak)
                 let itemsToRender = [];
                 if (item.mediaList && Array.isArray(item.mediaList)) {
                     itemsToRender = item.mediaList;
@@ -1029,13 +1417,10 @@
 
                 const itemHtml = `
                     <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative group">
-                        <!-- Kotak Media dengan Geser Horizontal -->
                         <div class="relative w-full h-48">
                             <div id="${scrollContainerId}" class="w-full h-48 overflow-x-auto flex no-scrollbar snap-x snap-mandatory scroll-smooth">
                                 ${mediaHtmlItems}
                             </div>
-                            
-                            <!-- Tombol Panah Petunjuk Geser Kiri / Kanan (Hanya muncul jika foto lebih dari 1) -->
                             ${hasMultiple ? `
                                 <button onclick="scrollGaleriCard('${scrollContainerId}', 'left')" class="absolute left-1 top-1/2 -translate-y-1/2 w-7 h-7 bg-black/60 hover:bg-black text-white rounded-full flex items-center justify-center text-xs shadow transition z-10">
                                     <i class="fa-solid fa-chevron-left"></i>
@@ -1079,7 +1464,6 @@
             }
         }
 
-        // Edit Catatan/Pengumuman Kegiatan oleh Operator
         function simpanCatatanKegiatan() {
             if (!isPengurus) {
                 alert("Akses ditolak!");
@@ -1092,7 +1476,7 @@
             }
         }
 
-        // Panel Kelola / Tambah Kas Manual Web
+        // Kas Manual Web & Google Sheets
         function bukaModalTambahKas() {
             if (!isPengurus) {
                 alert("Akses ditolak!");
@@ -1110,7 +1494,6 @@
             document.getElementById('panel-form-manual').classList.add('hidden');
         }
 
-        // Simpan / Edit Transaksi Manual ke LocalStorage Browser
         function simpanTransaksiManual() {
             const tgl = document.getElementById('input-tgl').value;
             const kat = document.getElementById('input-kat').value;
@@ -1169,10 +1552,8 @@
             }
         }
 
-        // Format Rupiah
         const toRupiah = (val) => 'Rp ' + Number(val || 0).toLocaleString('id-ID');
 
-        // Membaca Data dari Google Apps Script Web App
         function loadDataFromGoogleSheets() {
             const refreshIcon = document.getElementById('refresh-icon');
             if (refreshIcon) refreshIcon.classList.add('fa-spin');
@@ -1289,45 +1670,281 @@
             }).join('');
         }
 
-        // Inisialisasi Peta Leaflet (Koordinat: -5.433582, 105.724754)
+        // JAVASCRIPT KALKULATOR ZAKAT
+        const DEFAULT_ASNAF = [
+          { id: "fakir", nama: "1. Fakir", desc: "Tidak ada nafkah/penghasilan", jiwa: 50, bobot: 1.5, active: true },
+          { id: "miskin", nama: "2. Miskin", desc: "Penghasilan kurang dari cukup", jiwa: 120, bobot: 1.2, active: true },
+          { id: "amil", nama: "3. Amil Zakat", desc: "Panitia pelaksana zakat", jiwa: 6, bobot: 1.0, active: true },
+          { id: "mualaf", nama: "4. Mualaf", desc: "Orang yang baru masuk Islam", jiwa: 5, bobot: 1.0, active: true },
+          { id: "riqab", nama: "5. Riqab", desc: "Pembebasan / perlindungan", jiwa: 0, bobot: 1.0, active: true },
+          { id: "gharimin", nama: "6. Gharimin", desc: "Terlilit hutang darurat", jiwa: 4, bobot: 1.0, active: true },
+          { id: "fisabilillah", nama: "7. Fisabilillah", desc: "Penyiar agama / guru ngaji", jiwa: 10, bobot: 1.0, active: true },
+          { id: "ibnusabil", nama: "8. Ibnu Sabil", desc: "Musafir kehabisan bekal", jiwa: 2, bobot: 1.0, active: true }
+        ];
+
+        let masterAsnaf = JSON.parse(localStorage.getItem('app_zakat_asnaf_v7')) || DEFAULT_ASNAF;
+
+        function toggleTheme() {
+          const currentTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('app_zakat_theme', newTheme);
+        }
+
+        function toggleGuide() {
+          const modal = document.getElementById("guideModal");
+          modal.style.display = modal.style.display === "block" ? "none" : "block";
+        }
+
+        function hitungFitrahIndividu() {
+          const harga = parseFloat(document.getElementById("hargaBeras").value) || 0;
+          const takaran = parseFloat(document.getElementById("takaranBeras").value) || 0;
+          const total = harga * takaran;
+          document.getElementById("hasilFitrahUang").innerText = "Nilai Uang/Jiwa: " + formatRupiah(total);
+        }
+
+        function renderTabel() {
+          const tbody = document.getElementById("tabelBody");
+          const activeAsnaf = masterAsnaf.filter(x => x.active !== false);
+
+          tbody.innerHTML = activeAsnaf.map((item, idx) => `
+            <tr>
+              <td style="text-align: center; color: var(--text-muted); font-weight: 600; padding: 10px 12px;">${idx + 1}</td>
+              <td style="padding: 10px 12px;">
+                <div style="font-weight: 700; color: var(--text-color);">${item.nama}</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">${item.desc}</div>
+              </td>
+              <td style="padding: 10px 12px;">
+                <input type="number" min="0" value="${item.jiwa}" oninput="updateData('${item.id}', 'jiwa', this.value)" style="width: 55px; padding: 5px; text-align: center; font-weight: 700; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color); border-radius: 6px;">
+              </td>
+              <td style="text-align: center; padding: 10px 12px;">
+                <input type="number" step="0.1" min="0" value="${item.bobot}" oninput="updateData('${item.id}', 'bobot', this.value)" style="width: 60px; padding: 5px; text-align: center; font-weight: 700; border: 1px solid var(--border-color); background: var(--table-header); color: var(--text-color); border-radius: 6px;">
+              </td>
+              <td style="text-align: right; font-weight: 600; padding: 10px 12px;" id="beras_${item.id}">0 Kg</td>
+              <td style="text-align: right; font-weight: 600; padding: 10px 12px;" id="uang_${item.id}">Rp 0</td>
+              <td style="text-align: right; background: rgba(16, 185, 129, 0.05); font-weight: 700; color: #047857; padding: 10px 12px;" id="total_uang_${item.id}">Rp 0</td>
+              <td style="text-align: center; padding: 10px 12px;" class="no-print">
+                <button onclick="hapusAsnaf('${item.id}')" style="background: #ef4444; color: white; padding: 3px 8px; font-size: 0.7rem; border-radius: 4px; border: none; cursor: pointer;" title="Sembunyikan dari tabel">X</button>
+              </td>
+            </tr>
+          `).join('');
+
+          renderRemovedBox();
+        }
+
+        function renderRemovedBox() {
+          const removedContainer = document.getElementById("containerRemoved");
+          const removedAsnaf = masterAsnaf.filter(x => x.active === false);
+
+          if (removedAsnaf.length === 0) {
+            removedContainer.innerHTML = `<span style="color: var(--text-muted); font-style: italic;">Semua golongan Asnaf saat ini aktif di tabel.</span>`;
+            return;
+          }
+
+          removedContainer.innerHTML = removedAsnaf.map(item => `
+            <div style="background: var(--table-header); padding: 8px 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color);">
+              <div>
+                <strong>${item.nama}</strong> <span style="font-size: 0.75rem; color: var(--text-muted);">(${item.desc})</span>
+              </div>
+              <button onclick="kembalikanAsnaf('${item.id}')" style="background: #10b981; color: white; padding: 4px 8px; font-size: 0.72rem; border-radius: 6px; font-weight: 600; border: none; cursor: pointer;">+ Tambahkan Kembali</button>
+            </div>
+          `).join('');
+        }
+
+        function hapusAsnaf(id) {
+          const target = masterAsnaf.find(x => x.id === id);
+          if (target) {
+            target.active = false;
+            renderTabel();
+            simpanHitung();
+          }
+        }
+
+        function kembalikanAsnaf(id) {
+          const target = masterAsnaf.find(x => x.id === id);
+          if (target) {
+            target.active = true;
+            renderTabel();
+            simpanHitung();
+          }
+        }
+
+        function updateData(id, field, val) {
+          const target = masterAsnaf.find(x => x.id === id);
+          if (target) {
+            if (field === 'jiwa') {
+              target.jiwa = Math.max(0, parseInt(val) || 0);
+            } else if (field === 'bobot') {
+              target.bobot = Math.max(0, parseFloat(val) || 0);
+            }
+            simpanHitung();
+          }
+        }
+
+        function formatRupiah(num) {
+          return "Rp " + Math.round(num).toLocaleString("id-ID");
+        }
+
+        function simpanHitung() {
+          const totalBeras = parseFloat(document.getElementById("totalBeras").value) || 0;
+          const totalUang = parseFloat(document.getElementById("totalUang").value) || 0;
+          const namaKetua = document.getElementById("namaKetua").value;
+          const namaUlama = document.getElementById("namaUlama").value;
+          const namaSaksi = document.getElementById("namaSaksi").value;
+
+          localStorage.setItem('app_zakat_asnaf_v7', JSON.stringify(masterAsnaf));
+          localStorage.setItem('app_zakat_beras_v7', totalBeras);
+          localStorage.setItem('app_zakat_uang_v7', totalUang);
+          localStorage.setItem('app_zakat_ketua_v7', namaKetua);
+          localStorage.setItem('app_zakat_ulama_v7', namaUlama);
+          localStorage.setItem('app_zakat_saksi_v7', namaSaksi);
+
+          let totalPoin = 0;
+          let totalJiwa = 0;
+
+          const activeAsnaf = masterAsnaf.filter(x => x.active !== false);
+
+          activeAsnaf.forEach(item => {
+            totalJiwa += item.jiwa;
+            totalPoin += (item.jiwa * item.bobot);
+          });
+
+          document.getElementById("totalJiwaBadge").innerText = totalJiwa;
+          document.getElementById("footJiwa").innerText = totalJiwa + " Jiwa";
+          document.getElementById("footBeras").innerText = totalBeras.toLocaleString("id-ID") + " Kg";
+          document.getElementById("footUang").innerText = formatRupiah(totalUang);
+
+          const nilaiBerasPerPoin = totalPoin > 0 ? (totalBeras / totalPoin) : 0;
+          const nilaiUangPerPoin = totalPoin > 0 ? (totalUang / totalPoin) : 0;
+
+          activeAsnaf.forEach(item => {
+            const berasPerOrang = item.jiwa > 0 ? (item.bobot * nilaiBerasPerPoin) : 0;
+            const uangPerOrang = item.jiwa > 0 ? (item.bobot * nilaiUangPerPoin) : 0;
+            const totalUangAsnaf = uangPerOrang * item.jiwa;
+
+            const elBeras = document.getElementById(`beras_${item.id}`);
+            const elUang = document.getElementById(`uang_${item.id}`);
+            const elTotalUang = document.getElementById(`total_uang_${item.id}`);
+
+            if (elBeras) elBeras.innerText = (Math.round(berasPerOrang * 100) / 100).toLocaleString("id-ID") + " Kg";
+            if (elUang) elUang.innerText = formatRupiah(uangPerOrang);
+            if (elTotalUang) elTotalUang.innerText = formatRupiah(totalUangAsnaf);
+          });
+        }
+
+        function simpanArsip() {
+          const labelArsip = prompt("Beri nama arsip ini (Contoh: Rekap Zakat Masjid 2026):", "Arsip " + new Date().toLocaleDateString());
+          if (!labelArsip) return;
+
+          const totalBeras = document.getElementById("totalBeras").value;
+          const totalUang = document.getElementById("totalUang").value;
+          const totalJiwa = document.getElementById("totalJiwaBadge").innerText;
+
+          let listArsip = JSON.parse(localStorage.getItem('app_zakat_arsip_list')) || [];
+          listArsip.push({ label: labelArsip, beras: totalBeras, uang: totalUang, jiwa: totalJiwa, tanggal: new Date().toLocaleDateString() });
+          localStorage.setItem('app_zakat_arsip_list', JSON.stringify(listArsip));
+
+          muatArsip();
+          alert("Arsip berhasil disimpan!");
+        }
+
+        function muatArsip() {
+          let listArsip = JSON.parse(localStorage.getItem('app_zakat_arsip_list')) || [];
+          const container = document.getElementById("containerArsip");
+          if (listArsip.length === 0) {
+            container.innerHTML = `<span style="color: var(--text-muted); font-style: italic;">Belum ada arsip yang tersimpan.</span>`;
+            return;
+          }
+          container.innerHTML = listArsip.map((ars, i) => `
+            <div style="background: var(--table-header); padding: 8px 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color);">
+              <div>
+                <strong>${ars.label}</strong> <span style="font-size: 0.7rem; color: var(--text-muted);">(${ars.tanggal})</span><br>
+                <span style="font-size: 0.75rem;">Beras: ${ars.beras} Kg | Uang: Rp ${Number(ars.uang).toLocaleString('id-ID')} | Total: ${ars.jiwa} Jiwa</span>
+              </div>
+              <button onclick="hapusArsip(${i})" style="background: #ef4444; color: white; padding: 3px 8px; font-size: 0.7rem; border-radius: 4px; border: none; cursor: pointer;">Hapus</button>
+            </div>
+          `).join('');
+        }
+
+        function hapusArsip(index) {
+          let listArsip = JSON.parse(localStorage.getItem('app_zakat_arsip_list')) || [];
+          listArsip.splice(index, 1);
+          localStorage.setItem('app_zakat_arsip_list', JSON.stringify(listArsip));
+          muatArsip();
+        }
+
+        function downloadPDF() {
+          const element = document.getElementById('areaCetak');
+          const opt = {
+            margin:       0.3,
+            filename:     'Berita_Acara_Zakat.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+          };
+          html2pdf().from(element).set(opt).save();
+        }
+
+        function cetakHalaman() {
+          window.print();
+        }
+
+        function resetDefault() {
+          if (confirm("Reset ulang data ke pengaturan awal?")) {
+            masterAsnaf = JSON.parse(JSON.stringify(DEFAULT_ASNAF));
+            document.getElementById("totalBeras").value = 1000;
+            document.getElementById("totalUang").value = 20000000;
+            document.getElementById("namaKetua").value = "Nama Ketua";
+            document.getElementById("namaUlama").value = "Nama Tokoh";
+            document.getElementById("namaSaksi").value = "Nama Saksi";
+            localStorage.clear();
+            renderTabel();
+            simpanHitung();
+            muatArsip();
+          }
+        }
+
+        function exportCSV() {
+          let csv = "No,Asnaf,Jumlah Jiwa,Bobot,Beras Per Orang (Kg),Uang Per Orang (Rp)\n";
+          const activeAsnaf = masterAsnaf.filter(x => x.active !== false);
+
+          activeAsnaf.forEach((item, i) => {
+            const beras = document.getElementById(`beras_${item.id}`) ? document.getElementById(`beras_${item.id}`).innerText.replace(' Kg', '') : '0';
+            const uang = document.getElementById(`uang_${item.id}`) ? document.getElementById(`uang_${item.id}`).innerText.replace(/[^0-9]/g, '') : '0';
+            csv += `${i+1},"${item.nama}",${item.jiwa},${item.bobot},${beras},${uang}\n`;
+          });
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.setAttribute("href", url);
+          link.setAttribute("download", "Laporan_Distribusi_Zakat.csv");
+          link.click();
+        }
+
+        // Inisialisasi Peta & Halaman Saat Dimuat
         function initMap() {
             const lat = -5.433582;
             const lng = 105.724754;
             window.map = L.map('map').setView([lat, lng], 16);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap'
+                attribution: '&copy; OpenStreetMap contributors'
             }).addTo(window.map);
 
-            const marker = L.marker([lat, lng]).addTo(window.map);
-            marker.bindPopup(`
-                <b style="color:#065f46;">MASJID JAMI' DARUSSALAM</b><br>
-                JL DALOM BANDAR PEMATANG TAHALO<br>
-                <small>Kec. Jabung, Lampung Timur</small>
-            `).openPopup();
-        }
-
-        // Fungsi Share
-        function shareApp() {
-            if (navigator.share) {
-                navigator.share({
-                    title: "Masjid Jami' DARUSSALAM Pematang Tahalo",
-                    text: "Profil Resmi & Laporan Kas Masjid Jami' DARUSSALAM (ID SIMAS: 01.4.08.07.03.000020)",
-                    url: window.location.href
-                });
-            } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Tautan web berhasil disalin!");
-            }
+            L.marker([lat, lng]).addTo(window.map)
+                .bindPopup('<b>Masjid Jami\' Darussalam</b><br>Pematang Tahalo, Jabung')
+                .openPopup();
         }
 
         window.onload = function() {
             initMap();
-            loadDataFromGoogleSheets();
-            muatGaleriKegiatan();
+            renderTabel();
+            simpanHitung();
+            muatArsip();
             muatInfoRekening();
             muatAgendaKajian();
-            document.getElementById('current-date-text').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) + " · KAB. LAMPUNG TIMUR";
+            muatGaleriKegiatan();
+            loadDataFromGoogleSheets();
         };
     </script>
 </body>
